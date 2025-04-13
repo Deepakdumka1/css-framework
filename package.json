@@ -1,6 +1,6 @@
 {
   "name": "@deepakdumka/quantumcss",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A lightweight, modern CSS framework for building responsive websites",
   "main": "css/quantum.css",
   "style": "css/quantum.css",
@@ -25,5 +25,5 @@
   "bugs": {
     "url": "https://github.com/Deepakdumka1/css-framework/issues"
   },
-  "homepage": "https://github.com/Deepakdumka1/css-framework#readme",
+  "homepage": "https://github.com/Deepakdumka1/css-framework#readme"
 }
