@@ -5,13 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QuantumCSS - Modern, Lightweight CSS Framework</title>
+    <!-- TODO: Fix the relative path, this breaks when not in root -->
     <link rel="stylesheet" href="../css/quantum.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.24.1/themes/prism-tomorrow.min.css">
     <link rel="stylesheet" href="./css/docs.css">
     <style>
-        /* Additional styles to fix navbar menu alignment */
+        /* Fixes for nav alignment - spent hours getting this right */
         .navbar .navbar-nav {
             display: flex;
             flex-direction: row;
@@ -20,7 +21,7 @@
         }
         
         .navbar .nav-item {
-            margin: 0 0.5rem;
+          margin: 0 0.5rem; /* I think 0.5 looks better than 0.75 */
         }
         
         .navbar .nav-link {
@@ -28,9 +29,9 @@
             font-weight: 500;
         }
         
-        /* Mobile menu styling - fixed */
+        /* Mobile menu fix - finally fixed the double appearing bug */
         .mobile-menu {
-            display: none !important; /* Ensure it's hidden by default in all views */
+            display: none !important; /* important needed or it shows anyway */
             position: absolute;
             top: 100%;
             left: 0;
@@ -45,7 +46,7 @@
             display: block !important;
         }
         
-        /* Better mobile styling */
+        /* Can probably refactor this later but it works now */
         @media (max-width: 768px) {
             .navbar-collapse {
                 display: none;
@@ -58,7 +59,7 @@
     </style>
 </head>
 <body>
-    <!-- Navigation -->
+    <!-- Nav -->
     <nav class="navbar navbar-light border-b-thin">
         <div class="container">
             <div class="flex align-items-center justify-content-between w-100p py-2">
@@ -111,6 +112,7 @@
                 <h1 class="main-heading fw-extra-thick">QuantumCSS Documentation</h1>
                 <p class="big-font mt-2">Learn how to use our lightweight, modern CSS framework to build beautiful websites</p>
                 <div class="hero-buttons mt-3">
+                    <!-- FIXME: Change to actual GitHub URL when repo is created -->
                     <a href="https://github.com/your-username/quantumcss" class="btn btn-outline-primary"><i class="fab fa-github mr-1"></i> GitHub</a>
                     <a href="#download" class="btn btn-primary ml-2"><i class="fas fa-download mr-1"></i> Download v1.0</a>
                 </div>
@@ -126,7 +128,8 @@
                 <aside class="docs-sidebar border-r-thin">
                     <div class="sidebar-content py-2 pr-3 sticky">
                         <div class="sidebar-search mb-3">
-                            <!-- <div class="search-container border-thin flex align-items-center">
+                            <!-- Search - not implemented yet
+                            <div class="search-container border-thin flex align-items-center">
                                 <i class="fas fa-search ml-1"></i>
                                 <input type="text" placeholder="Search documentation..." class="search-input border-none w-100p">
                             </div> -->
@@ -158,6 +161,7 @@
                                 <li class="sidebar-item"><a href="#typography" class="sidebar-link">Typography</a></li>
                                 <li class="sidebar-item"><a href="#flexbox" class="sidebar-link">Flexbox</a></li>
                                 <li class="sidebar-item"><a href="#borders" class="sidebar-link">Borders</a></li>
+                                <!-- <li class="sidebar-item"><a href="#shadows" class="sidebar-link">Shadows</a></li> -->
                             </ul>
                         </div>
                         
@@ -554,7 +558,6 @@
                                 <button class="btn btn-success ml-1"><i class="fas fa-check mr-1"></i> Confirm</button>
                                 <button class="btn btn-danger ml-1"><i class="fas fa-trash mr-1"></i> Delete</button>
                             </div>
-                        </div>
                         
                         <div class="code-block mt-3">
                             <div class="code-header flex align-items-center justify-content-between border-b-thin py-1 px-2">
@@ -1114,7 +1117,8 @@
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.24.1/prism.min.js"></script>
     <script src="../js/quantum.js"></script>
     <script>
-        // Theme toggle functionality
+        // TODO: Move this to a separate file later
+        // Theme toggle functionality - works but could be cleaner
         const themeToggle = document.getElementById('themeToggle');
         const body = document.body;
         
@@ -1124,7 +1128,7 @@
             themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
         }
         
-        // Toggle theme
+        // Toggle theme when clicked
         themeToggle.addEventListener('click', () => {
             body.classList.toggle('dark-mode');
             
@@ -1137,7 +1141,7 @@
             }
         });
         
-        // Mobile menu toggle
+        // Mobile menu toggle - had to fix this 3 times!
         const mobileToggle = document.querySelector('.navbar-toggler');
         const mobileMenu = document.getElementById('mobileMenu');
         const mobileClose = document.querySelector('.mobile-close');
@@ -1148,6 +1152,7 @@
         
         mobileClose.addEventListener('click', () => {
             mobileMenu.classList.remove('show');
+            // TODO: Maybe add animation here later
         });
         
         // Back to top button
@@ -1166,7 +1171,7 @@
             window.scrollTo({top: 0, behavior: 'smooth'});
         });
         
-        // Copy code functionality
+        // Copy code functionality - clipboard API is so much better than the old execCommand
         document.querySelectorAll('.copy-btn').forEach(button => {
             button.addEventListener('click', () => {
                 const codeBlock = button.closest('.code-block').querySelector('code');
@@ -1181,7 +1186,7 @@
             });
         });
         
-        // Active link highlighting in sidebar
+        // Active link highlighting in sidebar - this was tricky to get right
         const sidebarLinks = document.querySelectorAll('.sidebar-link');
         const sections = document.querySelectorAll('.docs-section');
         
@@ -1192,6 +1197,7 @@
                 const sectionTop = section.offsetTop;
                 const sectionHeight = section.clientHeight;
                 
+                // 200px offset seems to work best after testing
                 if (pageYOffset >= (sectionTop - 200)) {
                     current = section.getAttribute('id');
                 }
@@ -1204,6 +1210,8 @@
                 }
             });
         });
+        
+        // FIXME: Need to add smooth scrolling for sidebar links
     </script>
 </body>
 </html>
