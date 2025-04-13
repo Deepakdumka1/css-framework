@@ -1,83 +1,74 @@
-# QuantumCSS Framework
+# QuantumCSS
 
-QuantumCSS is a groundbreaking CSS framework built from scratch that empowers developers to craft unique, responsive, and accessible user interfaces with functional precision.
+A lightweight, modern CSS framework for building beautiful, responsive websites with minimal effort.
 
 ![QuantumCSS Logo](docs/img/quantum-logo.png)
 
+## What is QuantumCSS?
+
+QuantumCSS is a fresh approach to CSS frameworks that focuses on simplicity, performance, and developer experience. I built it to solve common UI challenges without the bloat of larger frameworks.
+
 ## Features
 
-- **Fully responsive 12-column grid system** that adapts seamlessly across all devices
-- **Comprehensive utility classes** for spacing, typography, flexbox layouts, and precise alignment
-- **Cohesive design system** including a defined color palette, spacing scale, and typography guidelines
-- **Dark mode support** for improved accessibility in low-light environments
-- **Semantic class names** to ensure clarity and ease of use
-- **Modular components** that can be deployed in various projects
-- **Performance optimized** with minimal CSS footprint
-- **JavaScript components** for enhanced interactivity
-- **Accessibility focused** with proper contrast ratios and semantic markup
-
-## Table of Contents
-
-- [Installation](#installation)
-- [Getting Started](#getting-started)
-- [Documentation](#documentation)
-- [Browser Support](#browser-support)
-- [Components](#components)
-- [Utilities](#utilities)
-- [JavaScript Components](#javascript-components)
-- [Customization](#customization)
-- [Contributing](#contributing)
-- [License](#license)
+- 🎨 **Clean design system** with consistent spacing and typography
+- 📱 **Responsive 12-column grid** that works beautifully on all devices
+- 🧩 **Modular architecture** - use only what you need
+- 🔍 **Tiny footprint** (~15KB gzipped for the full framework)
+- 🌙 **Dark mode support** built right in
+- 🧰 **Utility classes** for rapid development
+- ♿ **Accessibility-focused** with proper contrast and semantic markup
+- 🚀 **Simple, intuitive API** that's easy to learn
 
 ## Installation
 
-You can include QuantumCSS in your project in several ways:
+Getting started with QuantumCSS is super easy:
 
 ### Option 1: Direct Download
 
-[Download the latest release](https://github.com/your-username/quantumcss/releases) and include the CSS and JavaScript files in your project:
+[Download the latest release](https://github.com/Deepakdumka1/css-framework/releases) and include it in your project:
 
 ```html
 <!-- CSS -->
 <link rel="stylesheet" href="path/to/quantum.css">
 
-<!-- JavaScript (optional) -->
+<!-- Optional JavaScript -->
 <script src="path/to/quantum.js"></script>
 ```
 
-### Option 2: Package Manager
-
-Install QuantumCSS via npm:
+### Option 2: NPM
 
 ```bash
-npm install quantumcss
+npm install @deepakdumka/quantumcss --save
 ```
 
-Then import it in your JavaScript:
+Then import in your project:
 
 ```javascript
-// Import CSS
-import 'quantumcss/css/quantum.css';
+// Import all styles
+import '@deepakdumka/quantumcss/css/quantum.css';
 
-// Import JS (optional)
-import 'quantumcss/js/quantum.js';
+// Optional JavaScript
+import '@deepakdumka/quantumcss/js/quantum.js';
+
+// Or import individual modules
+import '@deepakdumka/quantumcss/css/quantum-base.css';
+import '@deepakdumka/quantumcss/css/quantum-grid.css';
+// etc...
 ```
 
-### Option 3: CDN
-
-Include QuantumCSS directly from a CDN:
+### Option 3: CDN (Coming Soon)
 
 ```html
 <!-- CSS -->
-<link rel="stylesheet" href="https://cdn.example.com/quantumcss/1.0.0/quantum.min.css">
+<link rel="stylesheet" href="https://cdn.example.com/quantumcss/0.1.0/quantum.min.css">
 
-<!-- JavaScript (optional) -->
-<script src="https://cdn.example.com/quantumcss/1.0.0/quantum.min.js"></script>
+<!-- Optional JavaScript -->
+<script src="https://cdn.example.com/quantumcss/0.1.0/quantum.min.js"></script>
 ```
 
-## Getting Started
+## Quick Start
 
-Here's a basic HTML template to get you started:
+Here's a simple example to get you going:
 
 ```html
 <!DOCTYPE html>
@@ -90,25 +81,23 @@ Here's a basic HTML template to get you started:
 </head>
 <body>
   <div class="container">
-    <h1>Hello, QuantumCSS!</h1>
-    
-    <div class="row">
-      <div class="col-md-6">
+    <div class="row mt-4">
+      <div class="col-sm-12 col-md-6">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Card Title</h5>
-            <p class="card-text">Some quick example text for the card.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+            <h3 class="card-title">Getting Started</h3>
+            <p>This is a simple card built with QuantumCSS.</p>
+            <button class="btn btn-primary">Learn More</button>
           </div>
         </div>
       </div>
       
-      <div class="col-md-6">
+      <div class="col-sm-12 col-md-6">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Card Title</h5>
-            <p class="card-text">Some quick example text for the card.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+            <h3 class="card-title">Responsive Design</h3>
+            <p>Cards stack on mobile and display side-by-side on larger screens.</p>
+            <button class="btn btn-secondary">See Examples</button>
           </div>
         </div>
       </div>
@@ -122,87 +111,60 @@ Here's a basic HTML template to get you started:
 
 ## Documentation
 
-For detailed documentation, examples, and guides, visit our [documentation website](https://your-username.github.io/quantumcss/docs/).
+Check out our [documentation](https://Deepakdumka1.github.io/css-framework/docs/) for detailed guides and examples:
 
-- [Grid System](https://your-username.github.io/quantumcss/docs/#grid-system)
-- [Typography](https://your-username.github.io/quantumcss/docs/#typography)
-- [Utility Classes](https://your-username.github.io/quantumcss/docs/#utilities)
-- [Components](https://your-username.github.io/quantumcss/docs/#components)
-- [JavaScript Components](https://your-username.github.io/quantumcss/docs/#javascript)
-
-## Browser Support
-
-QuantumCSS is designed to work in all modern browsers:
-
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
-- Opera (latest)
-- iOS Safari (latest)
-- Android Chrome (latest)
+- [Grid System](https://Deepakdumka1.github.io/css-framework/docs/#grid-system)
+- [Typography](https://Deepakdumka1.github.io/css-framework/docs/#typography)
+- [Components](https://Deepakdumka1.github.io/css-framework/docs/#components)
+- [Utilities](https://Deepakdumka1.github.io/css-framework/docs/#utilities)
 
 ## Components
 
-QuantumCSS comes with a variety of components to help you build your website:
+QuantumCSS includes essential components to jumpstart your projects:
 
-- **Buttons** - Regular, outline, different sizes and states
-- **Cards** - Flexible content containers with various options
-- **Forms** - Input fields, checkboxes, radios, and validation styles
-- **Navigation** - Navbars, nav tabs, and breadcrumbs
+- **Buttons** - Standard, outline, and various sizes
+- **Cards** - Flexible containers for content
+- **Forms** - Styled inputs, checkboxes, and validation
+- **Navigation** - Responsive navbar and tabs
 - **Alerts** - Contextual feedback messages
-- **Badges** - Small count and labeling components
 - **And more!**
-
-## Utilities
-
-Utility classes help you build custom elements and extend existing components:
-
-- **Spacing** - Margin and padding utilities
-- **Typography** - Text alignment, weight, style, etc.
-- **Flexbox** - Utilities for building flexible layouts
-- **Grid** - Utilities for the grid system
-- **Colors** - Text and background colors
-- **Display** - Responsive display utilities
-- **Position** - Utilities for positioning elements
-
-## JavaScript Components
-
-Optional JavaScript components add interactivity to your site:
-
-- **Modals** - Dialog boxes for lightboxes and notifications
-- **Tabs** - Create tabbable interfaces
-- **Dropdowns** - Toggle contextual overlays
-- **Tooltips** - Show additional information on hover
-- **Collapse** - Toggle content visibility
-- **Dark Mode** - Toggle between light and dark themes
 
 ## Customization
 
-You can customize QuantumCSS to match your brand by modifying the CSS variables:
+Make QuantumCSS your own by customizing the CSS variables:
 
 ```css
 :root {
-  --q-primary: #0066ff;
-  --q-secondary: #805ad5;
-  --q-success: #00b074;
-  --q-danger: #e53e3e;
-  --q-warning: #fcc419;
+  --q-primary: #3366ff;
+  --q-secondary: #6c5ce7;
+  --q-success: #00b894;
+  --q-danger: #ff5252;
+  --q-warning: #fdcb6e;
+  --q-light: #f8f9fa;
+  --q-dark: #212529;
 }
 ```
 
-For more extensive customization, you can modify the source files and build your own version.
+## Browser Support
+
+QuantumCSS works in all modern browsers:
+
+- Chrome
+- Firefox
+- Safari
+- Edge
+- Opera
 
 ## Contributing
 
-We welcome contributions to QuantumCSS! Please read our [contributing guidelines](CONTRIBUTING.md) to get started.
+I'd love your help making QuantumCSS better! Feel free to:
 
 1. Fork the repository
-2. Create your feature branch: `git checkout -b feature/amazing-feature`
-3. Commit your changes: `git commit -m 'Add some amazing feature'`
-4. Push to the branch: `git push origin feature/amazing-feature`
+2. Create your feature branch: `git checkout -b feature/cool-new-feature`
+3. Commit your changes: `git commit -m 'Add some cool feature'`
+4. Push to the branch: `git push origin feature/cool-new-feature`
 5. Open a Pull Request
 
 ## License
 
-QuantumCSS is licensed under the [MIT License](LICENSE).
+QuantumCSS is released under the [MIT License](LICENSE).

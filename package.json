@@ -1,0 +1,29 @@
+{
+  "name": "@deepakdumka/quantumcss",
+  "version": "0.1.0",
+  "description": "A lightweight, modern CSS framework for building responsive websites",
+  "main": "css/quantum.css",
+  "style": "css/quantum.css",
+  "scripts": {
+    "test": "echo \"No tests yet\" && exit 1",
+    "build": "echo \"No build process yet\" && exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Deepakdumka1/css-framework.git"
+  },
+  "keywords": [
+    "css",
+    "framework",
+    "responsive",
+    "frontend",
+    "lightweight",
+    "modern"
+  ],
+  "author": "Deepak Dumka",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Deepakdumka1/css-framework/issues"
+  },
+  "homepage": "https://github.com/Deepakdumka1/css-framework#readme",
+}
