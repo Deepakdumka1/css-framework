@@ -1,107 +1,1333 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QuantumCSS - Modern, Lightweight CSS Framework</title>
-    <!-- TODO: Fix the relative path, this breaks when not in root -->
     <link rel="stylesheet" href="css/quantum.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.24.1/themes/prism-tomorrow.min.css">
     <link rel="stylesheet" href="./css/docs.css">
     <style>
-        /* Fixes for nav alignment - spent hours getting this right */
-        .navbar .navbar-nav {
+        /* Base styles */
+        :root {
+            --navbar-height: 70px;
+            --primary-color: #4361ee;
+            --primary-hover: #3a56d4;
+            --secondary-color: #4f5d75;
+            --success-color: #2ecc71;
+            --danger-color: #e74c3c;
+            --warning-color: #f39c12;
+            --info-color: #3498db;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --text-color: #333;
+            --text-muted: #6c757d;
+            --border-color: #e9ecef;
+            --border-radius: 0.25rem;
+            --box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            --transition-speed: 0.3s;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.5;
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        body.dark-mode {
+            --text-color: #f8f9fa;
+            --text-muted: #adb5bd;
+            --border-color: #495057;
+            --q-bg: #121212;
+            --q-border: #2d2d2d;
+            background-color: #121212;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Container */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        @media (min-width: 576px) {
+            .container {
+                padding: 0 1.5rem;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .container {
+                padding: 0 2rem;
+            }
+        }
+
+        /* Improved navbar */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 0;
+            background-color: var(--q-bg);
+            border-bottom: 1px solid var(--q-border);
+            transition: background-color 0.3s ease, border-color 0.3s ease, padding 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            padding: 0.75rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .navbar-brand {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.4rem 0;
+            margin-right: 2.5rem;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--q-text);
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .navbar-brand h1 {
+            margin: 0;
+            font-size: 1.75rem;
+            line-height: 1;
+        }
+
+        .navbar-brand a {
+            color: var(--q-text);
+            text-decoration: none;
+        }
+
+        .navbar-brand span {
+            color: var(--primary-color);
+        }
+
+        /* Navbar items alignment fix */
+        .navbar-collapse {
+            display: flex;
+            flex-grow: 1;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .navbar-nav {
             display: flex;
             flex-direction: row;
             align-items: center;
-            margin-left: auto;
+            padding-left: 0;
+            margin: 0;
+            list-style: none;
         }
-        
-        .navbar .nav-item {
-          margin: 0 0.5rem; /* I think 0.5 looks better than 0.75 */
+
+        .nav-item {
+            margin: 0 1rem;
+            position: relative;
         }
-        
-        .navbar .nav-link {
-            padding: 0.8rem 1rem;
+
+        .nav-item:first-child {
+            margin-left: 0;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 0.5rem 0;
+            color: var(--text-muted);
             font-weight: 500;
+            text-decoration: none;
+            transition: color 0.2s ease;
+            position: relative;
         }
-        
-        /* Mobile menu fix - finally fixed the double appearing bug */
-        .mobile-menu {
-            display: none !important; /* important needed or it shows anyway */
+
+        .nav-link:hover,
+        .nav-link:focus {
+            color: var(--text-color);
+        }
+
+        .nav-link::after {
+            content: '';
             position: absolute;
-            top: 100%;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after,
+        .nav-link:focus::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        /* Theme toggle styling */
+        .theme-toggle {
+            position: relative;
+            width: 48px;
+            height: 24px;
+            background-color: #e9ecef;
+            border-radius: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 4px;
+            margin-left: 1.5rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .theme-toggle.dark {
+            background-color: var(--primary-color);
+        }
+
+        .theme-toggle i {
+            font-size: 12px;
+            z-index: 1;
+        }
+
+        .theme-toggle i.fa-sun {
+            color: #f6ad55;
+        }
+
+        .theme-toggle i.fa-moon {
+            color: #e2e8f0;
+        }
+
+        .theme-toggle::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .theme-toggle.dark::after {
+            transform: translateX(24px);
+        }
+
+        /* Mobile Menu */
+        .navbar-toggler {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            font-size: 1.5rem;
+            color: var(--text-color);
+            transition: color 0.2s ease;
+        }
+
+        .navbar-toggler:hover,
+        .navbar-toggler:focus {
+            color: var(--primary-color);
+        }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
             left: 0;
             right: 0;
+            bottom: 0;
             background-color: var(--q-bg);
-            z-index: 1000;
-            border-bottom: 1px solid var(--q-border);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1050;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-20px);
         }
-        
+
         .mobile-menu.show {
-            display: block !important;
+            display: block;
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
         }
-        
-        /* Can probably refactor this later but it works now */
+
+        .mobile-menu-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.2rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .mobile-menu-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .mobile-close {
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--text-color);
+            transition: color 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .mobile-close:hover,
+        .mobile-close:focus {
+            color: var(--primary-color);
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .mobile-nav-links {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .mobile-nav-item {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .mobile-nav-link {
+            display: block;
+            padding: 1rem 1.5rem;
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .mobile-nav-link:hover,
+        .mobile-nav-link:focus {
+            background-color: rgba(0, 0, 0, 0.05);
+            padding-left: 1.75rem;
+            color: var(--primary-color);
+        }
+
+        .mobile-theme-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        /* Hero section */
+        .docs-hero {
+            padding: 3rem 0;
+            background-color: var(--light-color);
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        body.dark-mode .docs-hero {
+            background-color: #1a1a1a;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .main-heading {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .hero-buttons .btn {
+            min-width: 140px;
+        }
+
+        /* Docs layout */
+        .docs-main {
+            padding: 2rem 0;
+        }
+
+        .docs-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .docs-sidebar {
+            width: 250px;
+            flex-shrink: 0;
+        }
+
+        .docs-content {
+            flex: 1;
+            min-width: 0;
+            /* Important for text wrapping */
+        }
+
+        .sidebar-content.sticky {
+            position: sticky;
+            top: 90px;
+        }
+
+        .sidebar-heading {
+            font-size: 1.9rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--text-color);
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 1.5rem 0;
+        }
+
+        .sidebar-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-link {
+            display: block;
+            padding: 0.375rem 0;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 1.5rem;
+            transition: all 0.2s ease;
+            border-left: 2px solid transparent;
+            padding-left: 0.75rem;
+        }
+
+        .sidebar-link:hover,
+        .sidebar-link:focus,
+        .sidebar-link.active {
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            padding-left: 1rem;
+        }
+
+        /* Section styling */
+        .docs-section {
+            margin-bottom: 3rem;
+        }
+
+        .section-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .section-divider {
+            height: 3px;
+            width: 60px;
+            background-color: var(--primary-color);
+            margin-top: 0.75rem;
+        }
+
+        .medium-heading {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .small-heading {
+            font-size: 1.35rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem;
+        }
+
+        /* Card image container for responsive images */
+        .card-img-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border-top-left-radius: var(--border-radius);
+            border-top-right-radius: var(--border-radius);
+        }
+
+        .card-img-container img {
+            display: block;
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover .card-img-container img {
+            transform: scale(1.05);
+        }
+
+        /* Card styling */
+        .card {
+            background-color: #fff;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+
+        body.dark-mode .card {
+            background-color: #1e1e1e;
+        }
+
+        .card:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .card-body {
+            padding: 1.25rem;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            margin-top: 0;
+            margin-bottom: 0.75rem;
+        }
+
+        .card-text {
+            color: var(--text-muted);
+            margin-bottom: 1.25rem;
+        }
+
+        /* Button styling */
+        .btn {
+            display: inline-block;
+            font-weight: 500;
+            text-align: center;
+            vertical-align: middle;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            border-radius: var(--border-radius);
+            transition: all 0.2s ease-in-out;
+            text-decoration: none;
+            border: 1px solid transparent;
+        }
+
+        .btn:focus {
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba(67, 97, 238, 0.25);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: #fff;
+        }
+
+        .btn-primary:hover,
+        .btn-primary:focus {
+            background-color: var(--primary-hover);
+            border-color: var(--primary-hover);
+        }
+
+        .btn-outline-primary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+            background-color: transparent;
+        }
+
+        .btn-outline-primary:hover,
+        .btn-outline-primary:focus {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+
+        /* Code block styling */
+        .code-block {
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            margin: 1.5rem 0;
+        }
+
+        .code-header {
+            background-color: #f8f9fa;
+            padding: 0.5rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        body.dark-mode .code-header {
+            background-color: #2d2d2d;
+        }
+
+        .copy-btn {
+            background-color: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .copy-btn:hover,
+        .copy-btn:focus {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: #fff;
+        }
+
+        /* Table styling */
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            font-weight: 600;
+            background-color: rgba(0, 0, 0, 0.03);
+        }
+
+        body.dark-mode th {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Grid demo */
+        .grid-demo-box {
+            background-color: rgba(67, 97, 238, 0.1);
+            border: 1px solid rgba(67, 97, 238, 0.2);
+            padding: 1rem;
+            text-align: center;
+            border-radius: var(--border-radius);
+            font-size: 0.875rem;
+        }
+
+        body.dark-mode .grid-demo-box {
+            background-color: rgba(67, 97, 238, 0.2);
+        }
+
+        /* Enhanced Footer */
+        .docs-footer {
+            background-color: #f8f9fa;
+            border-top: 1px solid var(--border-color);
+            padding: 3rem 0 1.5rem;
+            color: var(--text-color);
+        }
+
+        body.dark-mode .docs-footer {
+            background-color: #1a1a1a;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 2rem;
+        }
+
+        .footer-brand {
+            grid-column: span 5;
+        }
+
+        .footer-links {
+            grid-column: span 2;
+        }
+
+        .footer-newsletter {
+            grid-column: span 3;
+        }
+
+        .footer-nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-nav li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .footer-nav a:hover,
+        .footer-nav a:focus {
+            color: var(--primary-color);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, 0.05);
+            color: var(--text-color);
+            transition: all 0.2s ease;
+        }
+
+        .social-icons a:hover,
+        .social-icons a:focus {
+            background-color: var(--primary-color);
+            color: #fff;
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .footer-bottom-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .footer-bottom-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.2s ease;
+        }
+
+        .footer-bottom-links a:hover,
+        .footer-bottom-links a:focus {
+            color: var(--primary-color);
+        }
+
+        .newsletter-form {
+            margin-top: 1rem;
+        }
+
+        .form-control {
+            display: block;
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: var(--text-color);
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+
+        body.dark-mode .form-control {
+            background-color: #2d2d2d;
+            color: #fff;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba(67, 97, 238, 0.25);
+        }
+
+        /* Back to top button */
+        .back-to-top-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 45px;
+            height: 45px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 99;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-to-top-btn.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top-btn:hover,
+        .back-to-top-btn:focus {
+            background-color: var(--primary-hover);
+            transform: translateY(-3px);
+            color: white;
+        }
+
+        /* Utility classes */
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-1 {
+            margin-top: 0.25rem;
+        }
+
+        .mt-2 {
+            margin-top: 0.5rem;
+        }
+
+        .mt-3 {
+            margin-top: 1rem;
+        }
+
+        .mt-4 {
+            margin-top: 1.5rem;
+        }
+
+        .mt-5 {
+            margin-top: 3rem;
+        }
+
+        .mb-0 {
+            margin-bottom: 0;
+        }
+
+        .mb-1 {
+            margin-bottom: 0.25rem;
+        }
+
+        .mb-2 {
+            margin-bottom: 0.5rem;
+        }
+
+        .mb-3 {
+            margin-bottom: 1rem;
+        }
+
+        .mb-4 {
+            margin-bottom: 1.5rem;
+        }
+
+        .mb-5 {
+            margin-bottom: 3rem;
+        }
+
+        .ml-1 {
+            margin-left: 0.25rem;
+        }
+
+        .ml-2 {
+            margin-left: 0.5rem;
+        }
+
+        .ml-3 {
+            margin-left: 1rem;
+        }
+
+        .ml-4 {
+            margin-left: 1.5rem;
+        }
+
+        .mr-1 {
+            margin-right: 0.25rem;
+        }
+
+        .mr-2 {
+            margin-right: 0.5rem;
+        }
+
+        .mr-3 {
+            margin-right: 1rem;
+        }
+
+        .mr-4 {
+            margin-right: 1.5rem;
+        }
+
+        .p-2 {
+            padding: 0.5rem;
+        }
+
+        .p-3 {
+            padding: 1rem;
+        }
+
+        .p-4 {
+            padding: 1.5rem;
+        }
+
+        .py-1 {
+            padding-top: 0.25rem;
+            padding-bottom: 0.25rem;
+        }
+
+        .py-2 {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+        }
+
+        .py-3 {
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+
+        .py-4 {
+            padding-top: 1.5rem;
+            padding-bottom: 1.5rem;
+        }
+
+        .px-2 {
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+        }
+
+        .px-3 {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        .px-4 {
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+        }
+
+        .border-thin {
+            border: 1px solid var(--border-color);
+        }
+
+        .border-b-thin {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .border-t-thin {
+            border-top: 1px solid var(--border-color);
+        }
+
+        .border-r-thin {
+            border-right: 1px solid var(--border-color);
+        }
+
+        .border-l-thin {
+            border-left: 1px solid var(--border-color);
+        }
+
+        .border-l-thick {
+            border-left-width: 4px;
+        }
+
+        .border-l-primary {
+            border-left-color: var(--primary-color);
+        }
+
+        .border-l-success {
+            border-left-color: var(--success-color);
+        }
+
+        .border-l-info {
+            border-left-color: var(--info-color);
+        }
+
+        .border-none {
+            border: none;
+        }
+
+        .border-t-none {
+            border-top: none;
+        }
+
+        .w-100p {
+            width: 100%;
+        }
+
+        .w-50p {
+            width: 50%;
+        }
+
+        .w-30p {
+            width: 30%;
+        }
+
+        .w-20p {
+            width: 20%;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .flex-wrap {
+            flex-wrap: wrap;
+        }
+
+        .align-items-center {
+            align-items: center;
+        }
+
+        .justify-content-between {
+            justify-content: space-between;
+        }
+
+        .justify-content-center {
+            justify-content: center;
+        }
+
+        .text-primary {
+            color: var(--primary-color);
+        }
+
+        .text-muted {
+            color: var(--text-muted);
+        }
+
+        .text-uppercase {
+            text-transform: uppercase;
+        }
+
+        .fw-thick {
+            font-weight: 700;
+        }
+
+        .fw-bold {
+            font-weight: 600;
+        }
+
+        .fw-extra-thick {
+            font-weight: 800;
+        }
+
+        .big-font {
+            font-size: 1.25rem;
+        }
+
+        .tiny-font {
+            font-size: 0.75rem;
+        }
+
+        .bg-light {
+            background-color: var(--light-color);
+        }
+
+        /* Responsive breakpoints */
+        @media (max-width: 1200px) {
+            .footer-grid {
+                gap: 1.5rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .footer-grid {
+                grid-template-columns: repeat(6, 1fr);
+            }
+
+            .footer-brand {
+                grid-column: span 6;
+            }
+
+            .footer-links {
+                grid-column: span 3;
+            }
+
+            .footer-newsletter {
+                grid-column: span 6;
+                margin-top: 1.5rem;
+            }
+
+            .main-heading {
+                font-size: 2.25rem;
+            }
+        }
+
         @media (max-width: 768px) {
             .navbar-collapse {
                 display: none;
             }
-            
+
             .navbar-toggler {
-                display: block !important;
+                display: block;
+            }
+
+            .navbar {
+                padding: 0.75rem 0;
+            }
+
+            .navbar-brand h1 {
+                font-size: 1.5rem;
+            }
+
+            .docs-container {
+                flex-direction: column;
+            }
+
+            .docs-sidebar {
+                width: 100%;
+                margin-bottom: 2rem;
+                border-right: none !important;
+                border-bottom: 1px solid var(--border-color);
+                padding-bottom: 1rem;
+            }
+
+            .docs-content {
+                width: 100%;
+                padding-left: 0 !important;
+            }
+
+            .sidebar-content.sticky {
+                position: relative;
+                top: 0;
+            }
+
+            .sidebar-content {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1.5rem;
+            }
+
+            .sidebar-group {
+                flex: 1;
+                min-width: 200px;
+            }
+
+            .footer-grid {
+                grid-template-columns: repeat(1, 1fr);
+            }
+
+            .footer-brand,
+            .footer-links,
+            .footer-newsletter {
+                grid-column: span 1;
+                margin-bottom: 1.5rem;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                align-items: flex-start;
+                text-align: center;
+            }
+
+            .footer-bottom-links {
+                margin-top: 1rem;
+                justify-content: center;
+                width: 100%;
+            }
+
+            .button-group button {
+                margin-bottom: 0.5rem;
+            }
+
+            .grid-demo-col {
+                margin-bottom: 1rem;
+            }
+
+            .main-heading {
+                font-size: 2rem;
+            }
+
+            .medium-heading {
+                font-size: 1.5rem;
+            }
+
+            .small-heading {
+                font-size: 1.25rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .navbar-brand h1 {
+                font-size: 1.35rem;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .browser-item {
+                width: 33.333%;
+                margin-bottom: 1rem;
+            }
+
+            .installation-option {
+                margin-bottom: 1.5rem;
+            }
+
+            .button-group {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .button-group button,
+            .button-group .btn {
+                margin: 0 !important;
+                width: 100%;
+            }
+
+            .tooltips-demo button {
+                margin-bottom: 0.5rem;
+                margin-left: 0 !important;
+                display: block;
+                width: 100%;
+            }
+
+            .tooltips-demo button:not(:first-child) {
+                margin-top: 0.5rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .hero-buttons .btn {
+                width: 100%;
+            }
+
+            .main-heading {
+                font-size: 1.75rem;
+            }
+
+            .docs-hero {
+                padding: 2rem 0;
+            }
+
+            .footer-bottom-links {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .social-icons {
+                justify-content: center;
+            }
+
+            .table-responsive {
+                display: block;
+                width: 100%;
+                overflow-x: auto;
+            }
+
+            .card-img-container {
+                height: 150px;
+            }
+
+            .card-img-container img {
+                height: 100%;
+                object-fit: cover;
             }
         }
     </style>
 </head>
+
 <body>
-    <!-- Nav -->
-    <nav class="navbar navbar-light border-b-thin">
+    <!-- Navbar -->
+    <nav class="navbar">
         <div class="container">
-            <div class="flex align-items-center justify-content-between w-100p py-2">
-                <div class="navbar-brand">
-                    <h1><a href="../index.html" class="big-font fw-thick">Quantum<span class="font-primary">CSS</span></a></h1>
-                </div>
-                <div class="navbar-collapse">
-                    <ul class="navbar-nav">
-                        <li class="nav-item"><a href="#getting-started" class="nav-link">Getting Started</a></li>
-                        <li class="nav-item"><a href="#layout" class="nav-link">Layout</a></li>
-                        <li class="nav-item"><a href="#utilities" class="nav-link">Utilities</a></li>
-                        <li class="nav-item"><a href="#components" class="nav-link">Components</a></li>
-                        <li class="nav-item"><a href="#javascript" class="nav-link">JavaScript</a></li>
-                        <li class="nav-item">
-                            <div class="theme-toggle ml-2" id="themeToggle">
+            <!-- Brand/Logo -->
+            <div class="navbar-brand">
+                <h1><a href="index.html">Quantum<span>CSS</span></a></h1>
+            </div>
+
+            <!-- Main Navigation -->
+            <div class="navbar-collapse">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a href="#getting-started" class="nav-link">Getting Started</a></li>
+                    <li class="nav-item"><a href="#layout" class="nav-link">Layout</a></li>
+                    <li class="nav-item"><a href="#utilities" class="nav-link">Utilities</a></li>
+                    <li class="nav-item"><a href="#components" class="nav-link">Components</a></li>
+                    <li class="nav-item"><a href="#javascript" class="nav-link">JavaScript</a></li>
+                    <li class="nav-item">
+                        <div class="theme-toggle-wrapper">
+                            <div class="theme-toggle" id="themeToggle">
+                                <i class="fas fa-sun"></i>
                                 <i class="fas fa-moon"></i>
                             </div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="navbar-toggler d-md-none">
-                    <i class="fas fa-bars big-font"></i>
-                </div>
-            </div>
-        </div>
-        <!-- Mobile Menu -->
-        <div class="mobile-menu" id="mobileMenu">
-            <div class="container">
-                <div class="mobile-menu-header flex align-items-center justify-content-between py-2">
-                    <h2>Menu</h2>
-                    <div class="mobile-close">
-                        <i class="fas fa-times big-font"></i>
-                    </div>
-                </div>
-                <ul class="mobile-nav-links">
-                    <li class="mobile-nav-item"><a href="#getting-started" class="mobile-nav-link">Getting Started</a></li>
-                    <li class="mobile-nav-item"><a href="#layout" class="mobile-nav-link">Layout</a></li>
-                    <li class="mobile-nav-item"><a href="#utilities" class="mobile-nav-link">Utilities</a></li>
-                    <li class="mobile-nav-item"><a href="#components" class="mobile-nav-link">Components</a></li>
-                    <li class="mobile-nav-item"><a href="#javascript" class="mobile-nav-link">JavaScript</a></li>
+                        </div>
+                    </li>
                 </ul>
             </div>
+
+            <!-- Mobile Menu Toggle -->
+            <div class="navbar-toggler">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu" id="mobileMenu">
+            <div class="mobile-menu-header">
+                <h2>Menu</h2>
+                <div class="mobile-close">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <ul class="mobile-nav-links">
+                <li class="mobile-nav-item"><a href="#getting-started" class="mobile-nav-link">Getting Started</a></li>
+                <li class="mobile-nav-item"><a href="#layout" class="mobile-nav-link">Layout</a></li>
+                <li class="mobile-nav-item"><a href="#utilities" class="mobile-nav-link">Utilities</a></li>
+                <li class="mobile-nav-item"><a href="#components" class="mobile-nav-link">Components</a></li>
+                <li class="mobile-nav-item"><a href="#javascript" class="mobile-nav-link">JavaScript</a></li>
+                <li class="mobile-nav-item">
+                    <div class="mobile-theme-toggle">
+                        <span>Dark Mode</span>
+                        <div class="theme-toggle" id="mobileThemeToggle">
+                            <i class="fas fa-sun"></i>
+                            <i class="fas fa-moon"></i>
+                        </div>
+                    </div>
+                </li>
+            </ul>
         </div>
     </nav>
 
@@ -110,10 +1336,12 @@
         <div class="container">
             <div class="hero-content text-center">
                 <h1 class="main-heading fw-extra-thick">QuantumCSS Documentation</h1>
-                <p class="big-font mt-2">Learn how to use our lightweight, modern CSS framework to build beautiful websites</p>
+                <p class="big-font mt-2">Learn how to use our lightweight, modern CSS framework to build beautiful
+                    websites</p>
                 <div class="hero-buttons mt-3">
-                    <a href="https://github.com/Deepakdumka1/css-framework.git" class="btn btn-outline-primary"><i class="fab fa-github mr-1"></i> GitHub</a>
-                    <a href="#download" class="btn btn-primary ml-2"><i class="fas fa-download mr-1"></i> Download v1.0</a>
+                    <a href="https://github.com/Deepakdumka1/css-framework.git" class="btn btn-outline-primary"><i
+                            class="fab fa-github mr-1"></i> GitHub</a>
+                    <a href="#download" class="btn btn-primary"><i class="fas fa-download mr-1"></i> Download v1.0</a>
                 </div>
             </div>
         </div>
@@ -122,36 +1350,32 @@
     <!-- Main content -->
     <div class="docs-main">
         <div class="container">
-            <div class="docs-container flex">
+            <div class="docs-container">
                 <!-- Sidebar -->
                 <aside class="docs-sidebar border-r-thin">
                     <div class="sidebar-content py-2 pr-3 sticky">
-                        <div class="sidebar-search mb-3">
-                            <!-- Search - not implemented yet
-                            <div class="search-container border-thin flex align-items-center">
-                                <i class="fas fa-search ml-1"></i>
-                                <input type="text" placeholder="Search documentation..." class="search-input border-none w-100p">
-                            </div> -->
-                        </div>
-                        
                         <div class="sidebar-group mb-3">
                             <h3 class="sidebar-heading fw-thick mb-1">Getting Started</h3>
                             <ul class="sidebar-nav">
-                                <li class="sidebar-item"><a href="#installation" class="sidebar-link">Installation</a></li>
+                                <li class="sidebar-item"><a href="#installation" class="sidebar-link">Installation</a>
+                                </li>
                                 <li class="sidebar-item"><a href="#basics" class="sidebar-link">Basic Usage</a></li>
-                                <li class="sidebar-item"><a href="#browser-support" class="sidebar-link">Browser Support</a></li>
+                                <li class="sidebar-item"><a href="#browser-support" class="sidebar-link">Browser
+                                        Support</a></li>
                             </ul>
                         </div>
-                        
+
                         <div class="sidebar-group mb-3">
                             <h3 class="sidebar-heading fw-thick mb-1">Layout</h3>
                             <ul class="sidebar-nav">
-                                <li class="sidebar-item"><a href="#grid-system" class="sidebar-link">Grid System</a></li>
-                                <li class="sidebar-item"><a href="#responsive" class="sidebar-link">Responsive Design</a></li>
+                                <li class="sidebar-item"><a href="#grid-system" class="sidebar-link">Grid System</a>
+                                </li>
+                                <li class="sidebar-item"><a href="#responsive" class="sidebar-link">Responsive
+                                        Design</a></li>
                                 <li class="sidebar-item"><a href="#containers" class="sidebar-link">Containers</a></li>
                             </ul>
                         </div>
-                        
+
                         <div class="sidebar-group mb-3">
                             <h3 class="sidebar-heading fw-thick mb-1">Utilities</h3>
                             <ul class="sidebar-nav">
@@ -160,10 +1384,9 @@
                                 <li class="sidebar-item"><a href="#typography" class="sidebar-link">Typography</a></li>
                                 <li class="sidebar-item"><a href="#flexbox" class="sidebar-link">Flexbox</a></li>
                                 <li class="sidebar-item"><a href="#borders" class="sidebar-link">Borders</a></li>
-                                <!-- <li class="sidebar-item"><a href="#shadows" class="sidebar-link">Shadows</a></li> -->
                             </ul>
                         </div>
-                        
+
                         <div class="sidebar-group mb-3">
                             <h3 class="sidebar-heading fw-thick mb-1">Components</h3>
                             <ul class="sidebar-nav">
@@ -175,7 +1398,7 @@
                                 <li class="sidebar-item"><a href="#badges" class="sidebar-link">Badges</a></li>
                             </ul>
                         </div>
-                        
+
                         <div class="sidebar-group mb-3">
                             <h3 class="sidebar-heading fw-thick mb-1">JavaScript</h3>
                             <ul class="sidebar-nav">
@@ -196,18 +1419,22 @@
                             <h2 class="medium-heading fw-thick">Getting Started</h2>
                             <div class="section-divider"></div>
                         </div>
-                        <p>QuantumCSS is a modern, lightweight, and modular CSS framework designed to help developers build beautiful, responsive websites with ease. It provides a comprehensive suite of utility classes, a responsive grid system, and pre-built components.</p>
-                        
+                        <p>QuantumCSS is a modern, lightweight, and modular CSS framework designed to help developers
+                            build beautiful, responsive websites with ease. It provides a comprehensive suite of utility
+                            classes, a responsive grid system, and pre-built components.</p>
+
                         <h3 id="installation" class="small-heading fw-thick mt-4 mb-2">Installation</h3>
                         <p>You can include QuantumCSS in your project in several ways:</p>
-                        
+
                         <div class="installation-options mt-3">
                             <div class="installation-option mb-3 border-thin p-3 border-l-thick border-l-primary">
                                 <h4 class="fw-thick">Option 1: Direct Download</h4>
-                                <p>Download the pre-compiled CSS and JS files directly from the <a href="#" class="font-primary">downloads page</a>.</p>
-                                
+                                <p>Download the pre-compiled CSS and JS files directly from the <a href="#"
+                                        class="font-primary">downloads page</a>.</p>
+
                                 <div class="code-block mt-2">
-                                    <div class="code-header flex align-items-center justify-content-between border-b-thin py-1 px-2">
+                                    <div
+                                        class="code-header flex align-items-center justify-content-between border-b-thin py-1 px-2">
                                         <span class="code-label">HTML</span>
                                         <button class="copy-btn tiny-font border-thin">Copy</button>
                                     </div>
@@ -218,26 +1445,28 @@
 &lt;script src="path/to/quantum.js"&gt;&lt;/script&gt;</code></pre>
                                 </div>
                             </div>
-                            
+
                             <div class="installation-option mb-3 border-thin p-3 border-l-thick border-l-success">
                                 <h4 class="fw-thick">Option 2: Package Manager</h4>
                                 <p>Install QuantumCSS via npm:</p>
-                                
+
                                 <div class="code-block mt-2">
-                                    <div class="code-header flex align-items-center justify-content-between border-b-thin py-1 px-2">
+                                    <div
+                                        class="code-header flex align-items-center justify-content-between border-b-thin py-1 px-2">
                                         <span class="code-label">Terminal</span>
                                         <button class="copy-btn tiny-font border-thin">Copy</button>
                                     </div>
                                     <pre class="m-0"><code class="language-bash">npm install quantumcss</code></pre>
                                 </div>
                             </div>
-                            
+
                             <div class="installation-option mb-3 border-thin p-3 border-l-thick border-l-info">
                                 <h4 class="fw-thick">Option 3: CDN</h4>
                                 <p>Include QuantumCSS directly from a CDN:</p>
-                                
+
                                 <div class="code-block mt-2">
-                                    <div class="code-header flex align-items-center justify-content-between border-b-thin py-1 px-2">
+                                    <div
+                                        class="code-header flex align-items-center justify-content-between border-b-thin py-1 px-2">
                                         <span class="code-label">HTML</span>
                                         <button class="copy-btn tiny-font border-thin">Copy</button>
                                     </div>
@@ -249,58 +1478,60 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <h3 id="basics" class="small-heading fw-thick mt-4 mb-2">Basic Usage</h3>
                         <p>Here's a simple HTML template to get you started:</p>
-                        
+
                         <div class="code-block mt-3">
-                            <div class="code-header flex align-items-center justify-content-between border-b-thin py-1 px-2">
+                            <div
+                                class="code-header flex align-items-center justify-content-between border-b-thin py-1 px-2">
                                 <span class="code-label">HTML</span>
                                 <button class="copy-btn tiny-font border-thin">Copy</button>
                             </div>
                             <pre class="m-0"><code class="language-html">&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
 &lt;head&gt;
-  &lt;meta charset="UTF-8"&gt;
-  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
-  &lt;title&gt;My QuantumCSS Project&lt;/title&gt;
-  &lt;link rel="stylesheet" href="path/to/quantum.css"&gt;
+&lt;meta charset="UTF-8"&gt;
+&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+&lt;title&gt;My QuantumCSS Project&lt;/title&gt;
+&lt;link rel="stylesheet" href="path/to/quantum.css"&gt;
 &lt;/head&gt;
 &lt;body&gt;
-  &lt;div class="container"&gt;
-    &lt;h1&gt;Hello, QuantumCSS!&lt;/h1&gt;
-    
-    &lt;div class="row"&gt;
-      &lt;div class="col-md-6"&gt;
-        &lt;div class="card"&gt;
-          &lt;div class="card-body"&gt;
-            &lt;h5 class="card-title"&gt;Card Title&lt;/h5&gt;
-            &lt;p class="card-text"&gt;Some quick example text to build on the card.&lt;/p&gt;
-            &lt;a href="#" class="btn btn-primary"&gt;Go somewhere&lt;/a&gt;
-          &lt;/div&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-      
-      &lt;div class="col-md-6"&gt;
-        &lt;div class="card"&gt;
-          &lt;div class="card-body"&gt;
-            &lt;h5 class="card-title"&gt;Card Title&lt;/h5&gt;
-            &lt;p class="card-text"&gt;Some quick example text to build on the card.&lt;/p&gt;
-            &lt;a href="#" class="btn btn-primary"&gt;Go somewhere&lt;/a&gt;
-          &lt;/div&gt;
-        &lt;/div&gt;
+&lt;div class="container"&gt;
+&lt;h1&gt;Hello, QuantumCSS!&lt;/h1&gt;
+
+&lt;div class="row"&gt;
+  &lt;div class="col-md-6"&gt;
+    &lt;div class="card"&gt;
+      &lt;div class="card-body"&gt;
+        &lt;h5 class="card-title"&gt;Card Title&lt;/h5&gt;
+        &lt;p class="card-text"&gt;Some quick example text to build on the card.&lt;/p&gt;
+        &lt;a href="#" class="btn btn-primary"&gt;Go somewhere&lt;/a&gt;
       &lt;/div&gt;
     &lt;/div&gt;
   &lt;/div&gt;
   
-  &lt;script src="path/to/quantum.js"&gt;&lt;/script&gt;
+  &lt;div class="col-md-6"&gt;
+    &lt;div class="card"&gt;
+      &lt;div class="card-body"&gt;
+        &lt;h5 class="card-title"&gt;Card Title&lt;/h5&gt;
+        &lt;p class="card-text"&gt;Some quick example text to build on the card.&lt;/p&gt;
+        &lt;a href="#" class="btn btn-primary"&gt;Go somewhere&lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script src="path/to/quantum.js"&gt;&lt;/script&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
                         </div>
-                        
+
                         <h3 id="browser-support" class="small-heading fw-thick mt-4 mb-2">Browser Support</h3>
-                        <p>QuantumCSS is designed to work in all modern browsers. The framework is tested and compatible with:</p>
-                        
+                        <p>QuantumCSS is designed to work in all modern browsers. The framework is tested and compatible
+                            with:</p>
+
                         <div class="browser-support mt-3 border-thin p-3">
                             <div class="browser-grid flex flex-wrap">
                                 <div class="browser-item text-center p-2">
@@ -326,32 +1557,35 @@
                             </div>
                         </div>
                     </section>
-                    
+
                     <section id="layout" class="docs-section mb-5">
                         <div class="section-header mb-3">
                             <h2 class="medium-heading fw-thick">Layout</h2>
                             <div class="section-divider"></div>
                         </div>
-                        
+
                         <h3 id="grid-system" class="small-heading fw-thick mt-4 mb-2">Grid System</h3>
-                        <p>QuantumCSS includes a responsive 12-column grid system that helps you create flexible layouts for any screen size.</p>
-                        
+                        <p>QuantumCSS includes a responsive 12-column grid system that helps you create flexible layouts
+                            for any screen size.</p>
+
                         <h4 class="fw-thick mt-3 mb-2">Basic Grid Structure</h4>
-                        <p>The grid system uses a series of containers, rows, and columns to layout and align content:</p>
-                        
+                        <p>The grid system uses a series of containers, rows, and columns to layout and align content:
+                        </p>
+
                         <div class="code-block mt-3">
-                            <div class="code-header flex align-items-center justify-content-between border-b-thin py-1 px-2">
+                            <div
+                                class="code-header flex align-items-center justify-content-between border-b-thin py-1 px-2">
                                 <span class="code-label">HTML</span>
                                 <button class="copy-btn tiny-font border-thin">Copy</button>
                             </div>
                             <pre class="m-0"><code class="language-html">&lt;div class="container"&gt;
-  &lt;div class="row"&gt;
-    &lt;div class="col-md-6"&gt;Content&lt;/div&gt;
-    &lt;div class="col-md-6"&gt;Content&lt;/div&gt;
-  &lt;/div&gt;
+&lt;div class="row"&gt;
+&lt;div class="col-md-6"&gt;Content&lt;/div&gt;
+&lt;div class="col-md-6"&gt;Content&lt;/div&gt;
+&lt;/div&gt;
 &lt;/div&gt;</code></pre>
                         </div>
-                        
+
                         <div class="grid-example mt-3">
                             <div class="row grid-demo">
                                 <div class="col-md-6 grid-demo-col">
@@ -361,7 +1595,7 @@
                                     <div class="grid-demo-box">col-md-6</div>
                                 </div>
                             </div>
-                            
+
                             <div class="row grid-demo mt-2">
                                 <div class="col-md-4 grid-demo-col">
                                     <div class="grid-demo-box">col-md-4</div>
@@ -373,7 +1607,7 @@
                                     <div class="grid-demo-box">col-md-4</div>
                                 </div>
                             </div>
-                            
+
                             <div class="row grid-demo mt-2">
                                 <div class="col-md-3 grid-demo-col">
                                     <div class="grid-demo-box">col-md-3</div>
@@ -389,10 +1623,10 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <h4 class="fw-thick mt-4 mb-2">Responsive Breakpoints</h4>
                         <p>The grid system includes six tiers of predefined classes for building responsive layouts:</p>
-                        
+
                         <div class="breakpoints-table mt-3 border-thin">
                             <table class="w-100p table-responsive">
                                 <thead class="border-b-thin">
@@ -437,19 +1671,21 @@
                             </table>
                         </div>
                     </section>
-                    
+
                     <section id="utilities" class="docs-section mb-5">
                         <div class="section-header mb-3">
                             <h2 class="medium-heading fw-thick">Utility Classes</h2>
                             <div class="section-divider"></div>
                         </div>
-                        <p>QuantumCSS provides a comprehensive set of utility classes to quickly style elements without writing custom CSS.</p>
-                        
+                        <p>QuantumCSS provides a comprehensive set of utility classes to quickly style elements without
+                            writing custom CSS.</p>
+
                         <h3 id="spacing" class="small-heading fw-thick mt-4 mb-2">Spacing Utilities</h3>
                         <p>Control margin and padding with responsive utility classes:</p>
-                        
+
                         <div class="code-block mt-3">
-                            <div class="code-header flex align-items-center justify-content-between border-b-thin py-1 px-2">
+                            <div
+                                class="code-header flex align-items-center justify-content-between border-b-thin py-1 px-2">
                                 <span class="code-label">HTML</span>
                                 <button class="copy-btn tiny-font border-thin">Copy</button>
                             </div>
@@ -463,17 +1699,17 @@
 &lt;div class="py-4"&gt;Padding top and bottom&lt;/div&gt;
 &lt;div class="px-5"&gt;Padding left and right&lt;/div&gt;</code></pre>
                         </div>
-                        
+
                         <div class="spacing-demo mt-4 border-thin p-3">
                             <h4 class="fw-thick mb-2">Spacing Examples</h4>
                             <div class="mt-4 border-thin p-2 bg-light">.mt-4 (Margin top)</div>
                             <div class="mb-4 mt-2 border-thin p-2 bg-light">.mb-4 (Margin bottom)</div>
                             <div class="mx-auto w-50p border-thin p-2 bg-light text-center">.mx-auto (Centered)</div>
                         </div>
-                        
+
                         <h3 id="typography" class="small-heading fw-thick mt-4 mb-2">Typography Utilities</h3>
                         <p>Quickly style text with typography utilities:</p>
-                        
+
                         <div class="typography-demo mt-3 border-thin p-3">
                             <p class="text-primary fw-thick">.text-primary - Primary text color</p>
                             <p class="text-center">.text-center - Centered text</p>
@@ -481,22 +1717,23 @@
                             <p class="fs-lg fw-bold">.fs-lg .fw-bold - Large, bold text</p>
                             <p class="text-muted">.text-muted - Muted text for less emphasis</p>
                         </div>
-                        
+
                         <h3 id="flexbox" class="small-heading fw-thick mt-4 mb-2">Flexbox Utilities</h3>
                         <p>Use flexbox utilities to build flexible layouts:</p>
-                        
+
                         <div class="code-block mt-3">
-                            <div class="code-header flex align-items-center justify-content-between border-b-thin py-1 px-2">
+                            <div
+                                class="code-header flex align-items-center justify-content-between border-b-thin py-1 px-2">
                                 <span class="code-label">HTML</span>
                                 <button class="copy-btn tiny-font border-thin">Copy</button>
                             </div>
                             <pre class="m-0"><code class="language-html">&lt;div class="d-flex justify-content-between"&gt;
-  &lt;div&gt;Item 1&lt;/div&gt;
-  &lt;div&gt;Item 2&lt;/div&gt;
-  &lt;div&gt;Item 3&lt;/div&gt;
+&lt;div&gt;Item 1&lt;/div&gt;
+&lt;div&gt;Item 2&lt;/div&gt;
+&lt;div&gt;Item 3&lt;/div&gt;
 &lt;/div&gt;</code></pre>
                         </div>
-                        
+
                         <div class="flex-demo mt-3 border-thin p-3">
                             <h4 class="fw-thick mb-2">Flexbox Examples</h4>
                             <div class="flex mb-2">
@@ -515,51 +1752,53 @@
                             </div>
                         </div>
                     </section>
-                    
+
                     <section id="components" class="docs-section mb-5">
                         <div class="section-header mb-3">
                             <h2 class="medium-heading fw-thick">Components</h2>
                             <div class="section-divider"></div>
                         </div>
-                        <p>QuantumCSS includes a variety of reusable components to help you build common UI patterns.</p>
-                        
+                        <p>QuantumCSS includes a variety of reusable components to help you build common UI patterns.
+                        </p>
+
                         <h3 id="buttons" class="small-heading fw-thick mt-4 mb-2">Buttons</h3>
                         <p>Use button styles for actions in forms, dialogs, and more:</p>
-                       
-                            <div class="button-group mb-3">
-                                <h4 class="fw-thick mb-2">Basic Buttons</h4>
-                                <button class="btn btn-primary">Primary</button>
-                                <button class="btn btn-secondary ml-1">Secondary</button>
-                                <button class="btn btn-success ml-1">Success</button>
-                                <button class="btn btn-danger ml-1">Danger</button>
-                                <button class="btn btn-warning ml-1">Warning</button>
-                            </div>
-                            
-                            <div class="button-group mb-3">
-                                <h4 class="fw-thick mb-2">Outline Buttons</h4>
-                                <button class="btn btn-outline-primary">Primary</button>
-                                <button class="btn btn-outline-secondary ml-1">Secondary</button>
-                                <button class="btn btn-outline-success ml-1">Success</button>
-                                <button class="btn btn-outline-danger ml-1">Danger</button>
-                                <button class="btn btn-outline-warning ml-1">Warning</button>
-                            </div>
-                            
-                            <div class="button-group mb-3">
-                                <h4 class="fw-thick mb-2">Button Sizes</h4>
-                                <button class="btn btn-primary btn-sm">Small</button>
-                                <button class="btn btn-primary ml-1">Default</button>
-                                <button class="btn btn-primary btn-lg ml-1">Large</button>
-                            </div>
-                            
-                            <div class="button-group">
-                                <h4 class="fw-thick mb-2">Button with Icons</h4>
-                                <button class="btn btn-primary"><i class="fas fa-download mr-1"></i> Download</button>
-                                <button class="btn btn-success ml-1"><i class="fas fa-check mr-1"></i> Confirm</button>
-                                <button class="btn btn-danger ml-1"><i class="fas fa-trash mr-1"></i> Delete</button>
-                            </div>
-                        
+
+                        <div class="button-group mb-3">
+                            <h4 class="fw-thick mb-2">Basic Buttons</h4>
+                            <button class="btn btn-primary">Primary</button>
+                            <button class="btn btn-secondary ml-1">Secondary</button>
+                            <button class="btn btn-success ml-1">Success</button>
+                            <button class="btn btn-danger ml-1">Danger</button>
+                            <button class="btn btn-warning ml-1">Warning</button>
+                        </div>
+
+                        <div class="button-group mb-3">
+                            <h4 class="fw-thick mb-2">Outline Buttons</h4>
+                            <button class="btn btn-outline-primary">Primary</button>
+                            <button class="btn btn-outline-secondary ml-1">Secondary</button>
+                            <button class="btn btn-outline-success ml-1">Success</button>
+                            <button class="btn btn-outline-danger ml-1">Danger</button>
+                            <button class="btn btn-outline-warning ml-1">Warning</button>
+                        </div>
+
+                        <div class="button-group mb-3">
+                            <h4 class="fw-thick mb-2">Button Sizes</h4>
+                            <button class="btn btn-primary btn-sm">Small</button>
+                            <button class="btn btn-primary ml-1">Default</button>
+                            <button class="btn btn-primary btn-lg ml-1">Large</button>
+                        </div>
+
+                        <div class="button-group">
+                            <h4 class="fw-thick mb-2">Button with Icons</h4>
+                            <button class="btn btn-primary"><i class="fas fa-download mr-1"></i> Download</button>
+                            <button class="btn btn-success ml-1"><i class="fas fa-check mr-1"></i> Confirm</button>
+                            <button class="btn btn-danger ml-1"><i class="fas fa-trash mr-1"></i> Delete</button>
+                        </div>
+
                         <div class="code-block mt-3">
-                            <div class="code-header flex align-items-center justify-content-between border-b-thin py-1 px-2">
+                            <div
+                                class="code-header flex align-items-center justify-content-between border-b-thin py-1 px-2">
                                 <span class="code-label">HTML</span>
                                 <button class="copy-btn tiny-font border-thin">Copy</button>
                             </div>
@@ -581,27 +1820,22 @@
 
 &lt;!-- Button with Icons --&gt;
 &lt;button class="btn btn-primary"&gt;
-  &lt;i class="fas fa-download mr-1"&gt;&lt;/i&gt; Download
+&lt;i class="fas fa-download mr-1"&gt;&lt;/i&gt; Download
 &lt;/button&gt;</code></pre>
                         </div>
-                        
+
                         <h3 id="cards" class="small-heading fw-thick mt-4 mb-2">Cards</h3>
                         <p>Cards are flexible content containers with multiple variants:</p>
-                        
+
                         <div class="cards-demo mt-3 p-3 border-thin">
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="card mb-3">
                                         <div class="card-img-container">
                                             <!-- Using explicit width and height to prevent layout shift -->
-                                            <img 
-                                                src="https://via.placeholder.com/300x150" 
-                                                class="card-img-top" 
-                                                alt="Card image"
-                                                width="100%" 
-                                                height="150"
-                                                onerror="this.onerror=null; this.src='https://via.placeholder.com/300x150?text=Image+Not+Found';"
-                                            >
+                                            <img src="https://via.placeholder.com/300x150" class="card-img-top"
+                                                alt="Card image" width="100%" height="150"
+                                                onerror="this.onerror=null; this.src='https://via.placeholder.com/300x150?text=Image+Not+Found';">
                                         </div>
                                         <div class="card-body p-3">
                                             <h5 class="card-title fw-thick">Card with Image</h5>
@@ -610,7 +1844,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-md-4">
                                     <div class="card mb-3">
                                         <div class="card-header border-b-thin p-2">Featured</div>
@@ -624,7 +1858,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-md-4">
                                     <div class="card border-primary mb-3">
                                         <div class="card-body p-3">
@@ -638,86 +1872,93 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="code-block mt-3">
-                            <div class="code-header flex align-items-center justify-content-between border-b-thin py-1 px-2">
+                            <div
+                                class="code-header flex align-items-center justify-content-between border-b-thin py-1 px-2">
                                 <span class="code-label">HTML</span>
                                 <button class="copy-btn tiny-font border-thin">Copy</button>
                             </div>
                             <pre class="m-0"><code class="language-html">&lt;!-- Basic Card --&gt;
 &lt;div class="card"&gt;
-  &lt;div class="card-body"&gt;
-    &lt;h5 class="card-title"&gt;Card Title&lt;/h5&gt;
-    &lt;p class="card-text"&gt;Some quick example text to build on the card.&lt;/p&gt;
-    &lt;a href="#" class="btn btn-primary"&gt;Go somewhere&lt;/a&gt;
-  &lt;/div&gt;
+&lt;div class="card-body"&gt;
+&lt;h5 class="card-title"&gt;Card Title&lt;/h5&gt;
+&lt;p class="card-text"&gt;Some quick example text to build on the card.&lt;/p&gt;
+&lt;a href="#" class="btn btn-primary"&gt;Go somewhere&lt;/a&gt;
+&lt;/div&gt;
 &lt;/div&gt;
 
 &lt;!-- Card with Image (with fallback) --&gt;
 &lt;div class="card"&gt;
-  &lt;div class="card-img-container"&gt;
-    &lt;img 
-      src="path/to/image.jpg" 
-      class="card-img-top" 
-      alt="Card image"
-      width="100%" 
-      height="200"
-      onerror="this.onerror=null; this.src='path/to/fallback.jpg';"
-    &gt;
-  &lt;/div&gt;
-  &lt;div class="card-body"&gt;
-    &lt;h5 class="card-title"&gt;Card Title&lt;/h5&gt;
-    &lt;p class="card-text"&gt;Some quick example text.&lt;/p&gt;
-    &lt;a href="#" class="btn btn-primary"&gt;Go somewhere&lt;/a&gt;
-  &lt;/div&gt;
+&lt;div class="card-img-container"&gt;
+&lt;img 
+  src="path/to/image.jpg" 
+  class="card-img-top" 
+  alt="Card image"
+  width="100%" 
+  height="200"
+  onerror="this.onerror=null; this.src='path/to/fallback.jpg';"
+&gt;
+&lt;/div&gt;
+&lt;div class="card-body"&gt;
+&lt;h5 class="card-title"&gt;Card Title&lt;/h5&gt;
+&lt;p class="card-text"&gt;Some quick example text.&lt;/p&gt;
+&lt;a href="#" class="btn btn-primary"&gt;Go somewhere&lt;/a&gt;
+&lt;/div&gt;
 &lt;/div&gt;
 
 &lt;!-- Card with Header and Footer --&gt;
 &lt;div class="card"&gt;
-  &lt;div class="card-header"&gt;Featured&lt;/div&gt;
-  &lt;div class="card-body"&gt;
-    &lt;h5 class="card-title"&gt;Card Title&lt;/h5&gt;
-    &lt;p class="card-text"&gt;Some text here.&lt;/p&gt;
-    &lt;a href="#" class="btn btn-primary"&gt;Go somewhere&lt;/a&gt;
-  &lt;/div&gt;
-  &lt;div class="card-footer"&gt;
-    &lt;small class="text-muted"&gt;Last updated 3 mins ago&lt;/small&gt;
-  &lt;/div&gt;
+&lt;div class="card-header"&gt;Featured&lt;/div&gt;
+&lt;div class="card-body"&gt;
+&lt;h5 class="card-title"&gt;Card Title&lt;/h5&gt;
+&lt;p class="card-text"&gt;Some text here.&lt;/p&gt;
+&lt;a href="#" class="btn btn-primary"&gt;Go somewhere&lt;/a&gt;
+&lt;/div&gt;
+&lt;div class="card-footer"&gt;
+&lt;small class="text-muted"&gt;Last updated 3 mins ago&lt;/small&gt;
+&lt;/div&gt;
 &lt;/div&gt;</code></pre>
                         </div>
-                        
+
                         <h4 class="fw-thick mt-4 mb-2">Image Loading Best Practices</h4>
-                        <p>When using images in cards, follow these best practices to improve performance and user experience:</p>
-                        
+                        <p>When using images in cards, follow these best practices to improve performance and user
+                            experience:</p>
+
                         <ul class="ml-4 mb-3">
-                            <li class="mb-1"><strong>Specify dimensions:</strong> Always include width and height attributes to prevent layout shifts during page load.</li>
-                            <li class="mb-1"><strong>Use fallbacks:</strong> Implement the onerror attribute to handle cases where images fail to load.</li>
-                            <li class="mb-1"><strong>Optimize images:</strong> Compress images and use appropriate formats (WebP for modern browsers, with JPEG/PNG fallbacks).</li>
-                            <li class="mb-1"><strong>Lazy loading:</strong> For long pages with many images, consider adding the loading="lazy" attribute.</li>
+                            <li class="mb-1"><strong>Specify dimensions:</strong> Always include width and height
+                                attributes to prevent layout shifts during page load.</li>
+                            <li class="mb-1"><strong>Use fallbacks:</strong> Implement the onerror attribute to handle
+                                cases where images fail to load.</li>
+                            <li class="mb-1"><strong>Optimize images:</strong> Compress images and use appropriate
+                                formats (WebP for modern browsers, with JPEG/PNG fallbacks).</li>
+                            <li class="mb-1"><strong>Lazy loading:</strong> For long pages with many images, consider
+                                adding the loading="lazy" attribute.</li>
                         </ul>
-                        
+
                         <div class="code-block mt-3">
-                            <div class="code-header flex align-items-center justify-content-between border-b-thin py-1 px-2">
+                            <div
+                                class="code-header flex align-items-center justify-content-between border-b-thin py-1 px-2">
                                 <span class="code-label">HTML</span>
                                 <button class="copy-btn tiny-font border-thin">Copy</button>
                             </div>
                             <pre class="m-0"><code class="language-html">&lt;!-- Advanced Image Handling --&gt;
 &lt;div class="card-img-container"&gt;
-  &lt;img 
-    src="image.jpg" 
-    class="card-img-top" 
-    alt="Descriptive alt text"
-    width="100%" 
-    height="200"
-    loading="lazy"
-    onerror="this.onerror=null; this.src='fallback.jpg';"
-  &gt;
+&lt;img 
+src="image.jpg" 
+class="card-img-top" 
+alt="Descriptive alt text"
+width="100%" 
+height="200"
+loading="lazy"
+onerror="this.onerror=null; this.src='fallback.jpg';"
+&gt;
 &lt;/div&gt;</code></pre>
                         </div>
-                        
+
                         <h3 id="alerts" class="small-heading fw-thick mt-4 mb-2">Alerts</h3>
                         <p>Provide contextual feedback messages for typical user actions:</p>
-                        
+
                         <div class="alerts-demo mt-3 border-thin p-3">
                             <div class="alert alert-primary p-3 mb-2">
                                 This is a primary alert—check it out!
@@ -735,41 +1976,44 @@
                                 This is an info alert—check it out!
                             </div>
                         </div>
-                        
+
                         <div class="code-block mt-3">
-                            <div class="code-header flex align-items-center justify-content-between border-b-thin py-1 px-2">
+                            <div
+                                class="code-header flex align-items-center justify-content-between border-b-thin py-1 px-2">
                                 <span class="code-label">HTML</span>
                                 <button class="copy-btn tiny-font border-thin">Copy</button>
                             </div>
                             <pre class="m-0"><code class="language-html">&lt;div class="alert alert-primary"&gt;
-  This is a primary alert—check it out!
+This is a primary alert—check it out!
 &lt;/div&gt;
 &lt;div class="alert alert-success"&gt;
-  This is a success alert—check it out!
+This is a success alert—check it out!
 &lt;/div&gt;
 &lt;div class="alert alert-danger"&gt;
-  This is a danger alert—check it out!
+This is a danger alert—check it out!
 &lt;/div&gt;
 &lt;div class="alert alert-warning"&gt;
-  This is a warning alert—check it out!
+This is a warning alert—check it out!
 &lt;/div&gt;
 &lt;div class="alert alert-info"&gt;
-  This is an info alert—check it out!
+This is an info alert—check it out!
 &lt;/div&gt;</code></pre>
                         </div>
-                        
+
                         <h3 id="forms" class="small-heading fw-thick mt-4 mb-2">Forms</h3>
                         <p>Style form controls and components with QuantumCSS:</p>
-                        
+
                         <div class="forms-demo mt-3 border-thin p-3">
                             <form class="form-example">
                                 <div class="form-group mb-3">
                                     <label for="exampleFormControlInput1" class="form-label mb-1">Email address</label>
-                                    <input type="email" class="form-control p-2 w-100p border-thin" id="exampleFormControlInput1" placeholder="name@example.com">
+                                    <input type="email" class="form-control p-2 w-100p border-thin"
+                                        id="exampleFormControlInput1" placeholder="name@example.com">
                                 </div>
-                                
+
                                 <div class="form-group mb-3">
-                                    <label for="exampleFormControlSelect1" class="form-label mb-1">Example select</label>
+                                    <label for="exampleFormControlSelect1" class="form-label mb-1">Example
+                                        select</label>
                                     <select class="form-control p-2 w-100p border-thin" id="exampleFormControlSelect1">
                                         <option>1</option>
                                         <option>2</option>
@@ -778,82 +2022,88 @@
                                         <option>5</option>
                                     </select>
                                 </div>
-                                
+
                                 <div class="form-group mb-3">
-                                    <label for="exampleFormControlTextarea1" class="form-label mb-1">Example textarea</label>
-                                    <textarea class="form-control p-2 w-100p border-thin" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                    <label for="exampleFormControlTextarea1" class="form-label mb-1">Example
+                                        textarea</label>
+                                    <textarea class="form-control p-2 w-100p border-thin"
+                                        id="exampleFormControlTextarea1" rows="3"></textarea>
                                 </div>
-                                
+
                                 <div class="form-check mb-3">
                                     <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
                                     <label class="form-check-label" for="flexCheckDefault">
                                         Default checkbox
                                     </label>
                                 </div>
-                                
+
                                 <div class="form-check form-switch mb-3">
                                     <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
                                     <label class="form-check-label" for="flexSwitchCheckDefault">Toggle switch</label>
                                 </div>
-                                
+
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </form>
                         </div>
-                        
+
                         <div class="code-block mt-3">
-                            <div class="code-header flex align-items-center justify-content-between border-b-thin py-1 px-2">
+                            <div
+                                class="code-header flex align-items-center justify-content-between border-b-thin py-1 px-2">
                                 <span class="code-label">HTML</span>
                                 <button class="copy-btn tiny-font border-thin">Copy</button>
                             </div>
                             <pre class="m-0"><code class="language-html">&lt;form&gt;
-  &lt;div class="form-group"&gt;
-    &lt;label for="exampleFormControlInput1" class="form-label"&gt;Email address&lt;/label&gt;
-    &lt;input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com"&gt;
-  &lt;/div&gt;
-  
-  &lt;div class="form-group"&gt;
-    &lt;label for="exampleFormControlSelect1" class="form-label"&gt;Example select&lt;/label&gt;
-    &lt;select class="form-control" id="exampleFormControlSelect1"&gt;
-      &lt;option&gt;1&lt;/option&gt;
-      &lt;option&gt;2&lt;/option&gt;
-      &lt;option&gt;3&lt;/option&gt;
-      &lt;option&gt;4&lt;/option&gt;
-      &lt;option&gt;5&lt;/option&gt;
-    &lt;/select&gt;
-  &lt;/div&gt;
-  
-  &lt;div class="form-group"&gt;
-    &lt;label for="exampleFormControlTextarea1" class="form-label"&gt;Example textarea&lt;/label&gt;
-    &lt;textarea class="form-control" id="exampleFormControlTextarea1" rows="3"&gt;&lt;/textarea&gt;
-  &lt;/div&gt;
-  
-  &lt;div class="form-check"&gt;
-    &lt;input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"&gt;
-    &lt;label class="form-check-label" for="flexCheckDefault"&gt;
-      Default checkbox
-    &lt;/label&gt;
-  &lt;/div&gt;
-  
-  &lt;button type="submit" class="btn btn-primary"&gt;Submit&lt;/button&gt;
+&lt;div class="form-group"&gt;
+&lt;label for="exampleFormControlInput1" class="form-label"&gt;Email address&lt;/label&gt;
+&lt;input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com"&gt;
+&lt;/div&gt;
+
+&lt;div class="form-group"&gt;
+&lt;label for="exampleFormControlSelect1" class="form-label"&gt;Example select&lt;/label&gt;
+&lt;select class="form-control" id="exampleFormControlSelect1"&gt;
+  &lt;option&gt;1&lt;/option&gt;
+  &lt;option&gt;2&lt;/option&gt;
+  &lt;option&gt;3&lt;/option&gt;
+  &lt;option&gt;4&lt;/option&gt;
+  &lt;option&gt;5&lt;/option&gt;
+&lt;/select&gt;
+&lt;/div&gt;
+
+&lt;div class="form-group"&gt;
+&lt;label for="exampleFormControlTextarea1" class="form-label"&gt;Example textarea&lt;/label&gt;
+&lt;textarea class="form-control" id="exampleFormControlTextarea1" rows="3"&gt;&lt;/textarea&gt;
+&lt;/div&gt;
+
+&lt;div class="form-check"&gt;
+&lt;input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"&gt;
+&lt;label class="form-check-label" for="flexCheckDefault"&gt;
+  Default checkbox
+&lt;/label&gt;
+&lt;/div&gt;
+
+&lt;button type="submit" class="btn btn-primary"&gt;Submit&lt;/button&gt;
 &lt;/form&gt;</code></pre>
                         </div>
                     </section>
-                    
+
                     <section id="javascript" class="docs-section mb-5">
                         <div class="section-header mb-3">
                             <h2 class="medium-heading fw-thick">JavaScript Components</h2>
                             <div class="section-divider"></div>
                         </div>
-                        <p>QuantumCSS includes several JavaScript components to add interactive features to your site.</p>
-                        
+                        <p>QuantumCSS includes several JavaScript components to add interactive features to your site.
+                        </p>
+
                         <h3 id="modals" class="small-heading fw-thick mt-4 mb-2">Modals</h3>
-                        <p>Use modals to add dialogs to your site for lightboxes, user notifications, or completely custom content.</p>
-                        
+                        <p>Use modals to add dialogs to your site for lightboxes, user notifications, or completely
+                            custom content.</p>
+
                         <div class="modal-demo mt-3 border-thin p-3">
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                data-target="#exampleModal">
                                 Launch demo modal
                             </button>
-                            
+
                             <!-- Modal preview (static representation) -->
                             <div class="modal-preview mt-3 border-thin">
                                 <div class="modal-dialog">
@@ -865,7 +2115,8 @@
                                             </button>
                                         </div>
                                         <div class="modal-body p-3">
-                                            <p>Modal body text goes here. This is what the modal will look like when opened.</p>
+                                            <p>Modal body text goes here. This is what the modal will look like when
+                                                opened.</p>
                                         </div>
                                         <div class="modal-footer border-t-thin p-3">
                                             <button type="button" class="btn btn-secondary">Close</button>
@@ -875,163 +2126,183 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="code-block mt-3">
-                            <div class="code-header flex align-items-center justify-content-between border-b-thin py-1 px-2">
+                            <div
+                                class="code-header flex align-items-center justify-content-between border-b-thin py-1 px-2">
                                 <span class="code-label">HTML</span>
                                 <button class="copy-btn tiny-font border-thin">Copy</button>
                             </div>
                             <pre class="m-0"><code class="language-html">&lt;!-- Button trigger modal --&gt;
 &lt;button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"&gt;
-  Launch demo modal
+Launch demo modal
 &lt;/button&gt;
 
 &lt;!-- Modal --&gt;
 &lt;div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"&gt;
-  &lt;div class="modal-dialog"&gt;
-    &lt;div class="modal-content"&gt;
-      &lt;div class="modal-header"&gt;
-        &lt;h5 class="modal-title" id="exampleModalLabel"&gt;Modal title&lt;/h5&gt;
-        &lt;button type="button" class="close" data-dismiss="modal" aria-label="Close"&gt;
-          &lt;span aria-hidden="true"&gt;&times;&lt;/span&gt;
-        &lt;/button&gt;
-      &lt;/div&gt;
-      &lt;div class="modal-body"&gt;
-        Modal content goes here...
-      &lt;/div&gt;
-      &lt;div class="modal-footer"&gt;
-        &lt;button type="button" class="btn btn-secondary" data-dismiss="modal"&gt;Close&lt;/button&gt;
-        &lt;button type="button" class="btn btn-primary"&gt;Save changes&lt;/button&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
+&lt;div class="modal-dialog"&gt;
+&lt;div class="modal-content"&gt;
+  &lt;div class="modal-header"&gt;
+    &lt;h5 class="modal-title" id="exampleModalLabel"&gt;Modal title&lt;/h5&gt;
+    &lt;button type="button" class="close" data-dismiss="modal" aria-label="Close"&gt;
+      &lt;span aria-hidden="true"&gt;&times;&lt;/span&gt;
+    &lt;/button&gt;
   &lt;/div&gt;
+  &lt;div class="modal-body"&gt;
+    Modal content goes here...
+  &lt;/div&gt;
+  &lt;div class="modal-footer"&gt;
+    &lt;button type="button" class="btn btn-secondary" data-dismiss="modal"&gt;Close&lt;/button&gt;
+    &lt;button type="button" class="btn btn-primary"&gt;Save changes&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 &lt;/div&gt;</code></pre>
                         </div>
-                        
+
                         <h3 id="tabs" class="small-heading fw-thick mt-4 mb-2">Tabs</h3>
                         <p>Create tabbable regions with the tabs JavaScript component:</p>
-                        
+
                         <div class="tabs-demo mt-3 border-thin p-3">
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 <li class="nav-item" role="presentation">
-                                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Home</a>
+                                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
+                                        aria-controls="home" aria-selected="true">Home</a>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Profile</a>
+                                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                                        aria-controls="profile" aria-selected="false">Profile</a>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Contact</a>
+                                    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab"
+                                        aria-controls="contact" aria-selected="false">Contact</a>
                                 </li>
                             </ul>
                             <div class="tab-content p-3 border-thin border-t-none" id="myTabContent">
-                                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                                    <p>Home tab content. Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse.</p>
+                                <div class="tab-pane fade show active" id="home" role="tabpanel"
+                                    aria-labelledby="home-tab">
+                                    <p>Home tab content. Raw denim you probably haven't heard of them jean shorts
+                                        Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse.</p>
                                 </div>
                                 <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                                    <p>Profile tab content. Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid.</p>
+                                    <p>Profile tab content. Food truck fixie locavore, accusamus mcsweeney's marfa nulla
+                                        single-origin coffee squid.</p>
                                 </div>
                                 <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-                                    <p>Contact tab content. Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo.</p>
+                                    <p>Contact tab content. Etsy mixtape wayfarers, ethical wes anderson tofu before
+                                        they sold out mcsweeney's organic lomo.</p>
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="code-block mt-3">
-                            <div class="code-header flex align-items-center justify-content-between border-b-thin py-1 px-2">
+                            <div
+                                class="code-header flex align-items-center justify-content-between border-b-thin py-1 px-2">
                                 <span class="code-label">HTML</span>
                                 <button class="copy-btn tiny-font border-thin">Copy</button>
                             </div>
                             <pre class="m-0"><code class="language-html">&lt;ul class="nav nav-tabs" id="myTab" role="tablist"&gt;
-  &lt;li class="nav-item" role="presentation"&gt;
-    &lt;a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true"&gt;Home&lt;/a&gt;
-  &lt;/li&gt;
-  &lt;li class="nav-item" role="presentation"&gt;
-    &lt;a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false"&gt;Profile&lt;/a&gt;
-  &lt;/li&gt;
-  &lt;li class="nav-item" role="presentation"&gt;
-    &lt;a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false"&gt;Contact&lt;/a&gt;
-  &lt;/li&gt;
+&lt;li class="nav-item" role="presentation"&gt;
+&lt;a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true"&gt;Home&lt;/a&gt;
+&lt;/li&gt;
+&lt;li class="nav-item" role="presentation"&gt;
+&lt;a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false"&gt;Profile&lt;/a&gt;
+&lt;/li&gt;
+&lt;li class="nav-item" role="presentation"&gt;
+&lt;a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false"&gt;Contact&lt;/a&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
 &lt;div class="tab-content" id="myTabContent"&gt;
-  &lt;div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab"&gt;
-    &lt;p&gt;Home tab content...&lt;/p&gt;
-  &lt;/div&gt;
-  &lt;div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab"&gt;
-    &lt;p&gt;Profile tab content...&lt;/p&gt;
-  &lt;/div&gt;
-  &lt;div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab"&gt;
-    &lt;p&gt;Contact tab content...&lt;/p&gt;
-  &lt;/div&gt;
+&lt;div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab"&gt;
+&lt;p&gt;Home tab content...&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab"&gt;
+&lt;p&gt;Profile tab content...&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab"&gt;
+&lt;p&gt;Contact tab content...&lt;/p&gt;
+&lt;/div&gt;
 &lt;/div&gt;</code></pre>
                         </div>
-                        
+
                         <h3 id="tooltips" class="small-heading fw-thick mt-4 mb-2">Tooltips</h3>
                         <p>Add tooltips to any element for additional information on hover:</p>
-                        
+
                         <div class="tooltips-demo mt-3 border-thin p-3">
-                            <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
+                            <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="top"
+                                title="Tooltip on top">
                                 Tooltip on top
                             </button>
-                            <button type="button" class="btn btn-secondary ml-1" data-toggle="tooltip" data-placement="right" title="Tooltip on right">
+                            <button type="button" class="btn btn-secondary ml-1" data-toggle="tooltip"
+                                data-placement="right" title="Tooltip on right">
                                 Tooltip on right
                             </button>
-                            <button type="button" class="btn btn-secondary ml-1" data-toggle="tooltip" data-placement="bottom" title="Tooltip on bottom">
+                            <button type="button" class="btn btn-secondary ml-1" data-toggle="tooltip"
+                                data-placement="bottom" title="Tooltip on bottom">
                                 Tooltip on bottom
                             </button>
-                            <button type="button" class="btn btn-secondary ml-1" data-toggle="tooltip" data-placement="left" title="Tooltip on left">
+                            <button type="button" class="btn btn-secondary ml-1" data-toggle="tooltip"
+                                data-placement="left" title="Tooltip on left">
                                 Tooltip on left
                             </button>
                         </div>
-                        
+
                         <div class="code-block mt-3">
-                            <div class="code-header flex align-items-center justify-content-between border-b-thin py-1 px-2">
+                            <div
+                                class="code-header flex align-items-center justify-content-between border-b-thin py-1 px-2">
                                 <span class="code-label">HTML</span>
                                 <button class="copy-btn tiny-font border-thin">Copy</button>
                             </div>
                             <pre class="m-0"><code class="language-html">&lt;button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Tooltip on top"&gt;
-  Tooltip on top
+Tooltip on top
 &lt;/button&gt;
 &lt;button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="right" title="Tooltip on right"&gt;
-  Tooltip on right
+Tooltip on right
 &lt;/button&gt;</code></pre>
                         </div>
-                        
+
                         <h3 id="collapse" class="small-heading fw-thick mt-4 mb-2">Collapse</h3>
                         <p>Toggle the visibility of content with the collapse JavaScript plugin:</p>
-                        
+
                         <div class="collapse-demo mt-3 border-thin p-3">
                             <p>
-                                <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button"
+                                    aria-expanded="false" aria-controls="collapseExample">
                                     Link with href
                                 </a>
-                                <button class="btn btn-primary ml-1" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                <button class="btn btn-primary ml-1" type="button" data-toggle="collapse"
+                                    data-target="#collapseExample" aria-expanded="false"
+                                    aria-controls="collapseExample">
                                     Button with data-target
                                 </button>
                             </p>
                             <div class="collapse mt-2" id="collapseExample">
                                 <div class="card card-body p-3">
-                                    This is some placeholder content for a collapsible element. You can collapse and expand it to save space or to focus the user's attention. Click the buttons above to toggle this content.
+                                    This is some placeholder content for a collapsible element. You can collapse and
+                                    expand it to save space or to focus the user's attention. Click the buttons above to
+                                    toggle this content.
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="code-block mt-3">
-                            <div class="code-header flex align-items-center justify-content-between border-b-thin py-1 px-2">
+                            <div
+                                class="code-header flex align-items-center justify-content-between border-b-thin py-1 px-2">
                                 <span class="code-label">HTML</span>
                                 <button class="copy-btn tiny-font border-thin">Copy</button>
                             </div>
                             <pre class="m-0"><code class="language-html">&lt;p&gt;
-  &lt;a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"&gt;
-    Link with href
-  &lt;/a&gt;
-  &lt;button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"&gt;
-    Button with data-target
-  &lt;/button&gt;
+&lt;a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"&gt;
+Link with href
+&lt;/a&gt;
+&lt;button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"&gt;
+Button with data-target
+&lt;/button&gt;
 &lt;/p&gt;
 &lt;div class="collapse" id="collapseExample"&gt;
-  &lt;div class="card card-body"&gt;
-    Some placeholder content for the collapse component.
-  &lt;/div&gt;
+&lt;div class="card card-body"&gt;
+Some placeholder content for the collapse component.
+&lt;/div&gt;
 &lt;/div&gt;</code></pre>
                         </div>
                     </section>
@@ -1047,68 +2318,70 @@
         </a>
     </div>
 
-    <!-- Footer -->
-    <footer class="docs-footer py-4 border-t-thin">
+    <!-- Enhanced Footer -->
+    <footer class="docs-footer">
         <div class="container">
-            <div class="footer-grid flex flex-wrap">
-                <div class="footer-brand w-30p">
-                    <h2 class="big-font fw-thick mb-1">Quantum<span class="font-primary">CSS</span></h2>
-                    <p class="mb-2">A lightweight, modern CSS framework built from scratch that empowers developers to craft unique, responsive, and accessible user interfaces.</p>
-                    <div class="social-icons mt-2">
-                        <a href="#" class="mr-2"><i class="fab fa-github"></i></a>
-                        <a href="#" class="mr-2"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="mr-2"><i class="fab fa-discord"></i></a>
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h2 class="big-font fw-thick mb-1">Quantum<span class="text-primary">CSS</span></h2>
+                    <p class="mb-2">A lightweight, modern CSS framework built from scratch that empowers developers to
+                        craft unique, responsive, and accessible user interfaces.</p>
+                    <div class="social-icons">
+                        <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Discord"><i class="fab fa-discord"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
-                
-                <div class="footer-links w-20p">
+
+                <div class="footer-links">
                     <h3 class="small-heading fw-thick mb-2">Documentation</h3>
                     <ul class="footer-nav">
-                        <li class="mb-1"><a href="#getting-started">Getting Started</a></li>
-                        <li class="mb-1"><a href="#layout">Layout</a></li>
-                        <li class="mb-1"><a href="#utilities">Utilities</a></li>
-                        <li class="mb-1"><a href="#components">Components</a></li>
-                        <li class="mb-1"><a href="#javascript">JavaScript</a></li>
+                        <li><a href="#getting-started">Getting Started</a></li>
+                        <li><a href="#layout">Layout</a></li>
+                        <li><a href="#utilities">Utilities</a></li>
+                        <li><a href="#components">Components</a></li>
+                        <li><a href="#javascript">JavaScript</a></li>
                     </ul>
                 </div>
-                
-                <div class="footer-links w-20p">
+
+                <div class="footer-links">
                     <h3 class="small-heading fw-thick mb-2">Community</h3>
                     <ul class="footer-nav">
-                        <li class="mb-1"><a href="#">GitHub</a></li>
-                        <li class="mb-1"><a href="#">Discord</a></li>
-                        <li class="mb-1"><a href="#">Stack Overflow</a></li>
-                        <li class="mb-1"><a href="#">Twitter</a></li>
+                        <li><a href="#">GitHub</a></li>
+                        <li><a href="#">Discord</a></li>
+                        <li><a href="#">Stack Overflow</a></li>
+                        <li><a href="#">Twitter</a></li>
                     </ul>
                 </div>
-                
-                <div class="footer-newsletter w-30p">
+
+                <div class="footer-newsletter">
                     <h3 class="small-heading fw-thick mb-2">Stay Updated</h3>
                     <p class="mb-2">Subscribe to our newsletter to get the latest updates and news.</p>
                     <div class="newsletter-form">
                         <div class="form-group mb-2">
-                            <input type="email" class="form-control p-2 w-100p border-thin" placeholder="Enter your email">
+                            <input type="email" class="form-control p-2 w-100p" placeholder="Enter your email"
+                                aria-label="Email address">
                         </div>
                         <button class="btn btn-primary w-100p">Subscribe</button>
                     </div>
                 </div>
             </div>
-            
-            <div class="footer-bottom border-t-thin mt-4 pt-3">
-                <div class="flex flex-wrap align-items-center justify-content-between">
-                    <p class="mb-0">&copy; 2023 QuantumCSS. All rights reserved.</p>
-                    <div class="footer-links tiny-font">
-                        <a href="#" class="mr-2">Privacy Policy</a>
-                        <a href="#" class="mr-2">Terms of Service</a>
-                        <a href="#">License</a>
-                    </div>
+
+            <div class="footer-bottom">
+                <p class="mb-0">&copy; 2023 QuantumCSS. All rights reserved.</p>
+                <div class="footer-bottom-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">License</a>
+                    <a href="#">Sitemap</a>
                 </div>
             </div>
         </div>
     </footer>
 
     <!-- Back to top button -->
-    <a href="#" class="back-to-top-btn" id="backToTopBtn">
+    <a href="#" class="back-to-top-btn" id="backToTopBtn" aria-label="Back to top">
         <i class="fas fa-arrow-up"></i>
     </a>
 
@@ -1116,92 +2389,139 @@
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.24.1/prism.min.js"></script>
     <script src="../js/quantum.js"></script>
     <script>
-        // TODO: Move this to a separate file later
-        // Theme toggle functionality - works but could be cleaner
-        const themeToggle = document.getElementById('themeToggle');
-        const body = document.body;
-        
-        // Check for saved theme preference
-        if (localStorage.getItem('darkMode') === 'enabled') {
-            body.classList.add('dark-mode');
-            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-        }
-        
-        // Toggle theme when clicked
-        themeToggle.addEventListener('click', () => {
-            body.classList.toggle('dark-mode');
-            
-            if (body.classList.contains('dark-mode')) {
-                localStorage.setItem('darkMode', 'enabled');
-                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-            } else {
-                localStorage.setItem('darkMode', null);
-                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        // JavaScript for theme toggle functionality
+        document.addEventListener('DOMContentLoaded', function () {
+            // Check for saved theme preference
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                document.getElementById('themeToggle').classList.add('dark');
+                if (document.getElementById('mobileThemeToggle')) {
+                    document.getElementById('mobileThemeToggle').classList.add('dark');
+                }
             }
+
+            // Desktop theme toggle
+            const themeToggle = document.getElementById('themeToggle');
+            themeToggle.addEventListener('click', function () {
+                toggleTheme();
+            });
+
+            // Mobile theme toggle
+            const mobileThemeToggle = document.getElementById('mobileThemeToggle');
+            if (mobileThemeToggle) {
+                mobileThemeToggle.addEventListener('click', function () {
+                    toggleTheme();
+                });
+            }
+
+            // Function to toggle theme
+            function toggleTheme() {
+                document.body.classList.toggle('dark-mode');
+
+                // Update toggle states
+                themeToggle.classList.toggle('dark');
+                if (mobileThemeToggle) {
+                    mobileThemeToggle.classList.toggle('dark');
+                }
+
+                // Save preference to localStorage
+                if (document.body.classList.contains('dark-mode')) {
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    localStorage.setItem('theme', 'light');
+                }
+            }
+
+            // Mobile menu toggle
+            const navbarToggler = document.querySelector('.navbar-toggler');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const mobileClose = document.querySelector('.mobile-close');
+
+            if (navbarToggler && mobileMenu && mobileClose) {
+                navbarToggler.addEventListener('click', function () {
+                    mobileMenu.classList.add('show');
+                    document.body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
+                });
+
+                mobileClose.addEventListener('click', function () {
+                    mobileMenu.classList.remove('show');
+                    document.body.style.overflow = ''; // Restore scrolling
+                });
+
+                // Close mobile menu when clicking on a link
+                const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+                mobileLinks.forEach(link => {
+                    link.addEventListener('click', function () {
+                        mobileMenu.classList.remove('show');
+                        document.body.style.overflow = '';
+                    });
+                });
+            }
+
+            // Navbar scroll effect
+            const navbar = document.querySelector('.navbar');
+            window.addEventListener('scroll', function () {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
         });
-        
-        // Mobile menu toggle - had to fix this 3 times!
-        const mobileToggle = document.querySelector('.navbar-toggler');
-        const mobileMenu = document.getElementById('mobileMenu');
-        const mobileClose = document.querySelector('.mobile-close');
-        
-        mobileToggle.addEventListener('click', () => {
-            mobileMenu.classList.toggle('show');
-        });
-        
-        mobileClose.addEventListener('click', () => {
-            mobileMenu.classList.remove('show');
-            // TODO: Maybe add animation here later
-        });
-        
+
         // Back to top button
         const backToTopBtn = document.getElementById('backToTopBtn');
-        
-        window.addEventListener('scroll', () => {
-            if (window.pageYOffset > 300) {
-                backToTopBtn.classList.add('show');
-            } else {
-                backToTopBtn.classList.remove('show');
-            }
-        });
-        
-        backToTopBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            window.scrollTo({top: 0, behavior: 'smooth'});
-        });
-        
-        // Copy code functionality - clipboard API is so much better than the old execCommand
+
+        if (backToTopBtn) {
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+
+        // Copy code functionality
         document.querySelectorAll('.copy-btn').forEach(button => {
             button.addEventListener('click', () => {
                 const codeBlock = button.closest('.code-block').querySelector('code');
                 const textToCopy = codeBlock.textContent;
-                
+
                 navigator.clipboard.writeText(textToCopy).then(() => {
                     button.textContent = 'Copied!';
                     setTimeout(() => {
                         button.textContent = 'Copy';
                     }, 2000);
+                }).catch(err => {
+                    console.error('Could not copy text: ', err);
                 });
             });
         });
-        
-        // Active link highlighting in sidebar - this was tricky to get right
+
+        // Active link highlighting in sidebar
         const sidebarLinks = document.querySelectorAll('.sidebar-link');
         const sections = document.querySelectorAll('.docs-section');
-        
+
         window.addEventListener('scroll', () => {
             let current = '';
-            
+
             sections.forEach(section => {
                 const sectionTop = section.offsetTop;
                 const sectionHeight = section.clientHeight;
-                
-                // 200px offset seems to work best after testing
-                if (pageYOffset >= (sectionTop - 200)) {
+
+                // 200px offset for better UX
+                if (window.scrollY >= (sectionTop - 200)) {
                     current = section.getAttribute('id');
                 }
             });
-            
+
             sidebarLinks.forEach(link => {
                 link.classList.remove('active');
                 if (link.getAttribute('href') === `#${current}`) {
@@ -1209,8 +2529,29 @@
                 }
             });
         });
-        
-        // FIXME: Need to add smooth scrolling for sidebar links
+
+        // Smooth scrolling for all anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    e.preventDefault();
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80, // Offset for fixed header
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Touch-friendly interactions for mobile
+        if ('ontouchstart' in window) {
+            document.body.classList.add('touch-device');
+        }
     </script>
 </body>
+
 </html>
