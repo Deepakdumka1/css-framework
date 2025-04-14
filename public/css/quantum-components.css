@@ -734,3 +734,87 @@
 .badge-pill {
   border-radius: var(--q-radius-full);
 }
+
+/* 
+ * Feature Cards - Added these for my portfolio site
+ * They're like regular cards but with a cool hover effect and icon
+ * 
+ * Example usage:
+ * <div class="feature-card">
+ *   <div class="feature-icon">
+ *     <i class="fas fa-rocket"></i>
+ *   </div>
+ *   <h3>Feature Title</h3>
+ *   <p>Feature description goes here</p>
+ * </div>
+ */
+.feature-card {
+  position: relative;
+  padding: 2rem 1.5rem;
+  background-color: var(--q-bg);
+  border-radius: var(--q-radius-lg);
+  box-shadow: var(--q-shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+  overflow: hidden;
+  z-index: 1;
+  border: 1px solid var(--q-border);
+  height: 100%; /* makes all cards same height in a row */
+}
+
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: var(--q-primary);
+  z-index: 2;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.4s ease-out;
+}
+
+/* I like this subtle hover effect better than the dramatic ones */
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--q-shadow-md);
+}
+
+.feature-card:hover::before {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.feature-icon {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--q-primary);
+  color: white;
+  border-radius: 50%;
+  font-size: 1.5rem;
+}
+
+/* Alternate versions with different colors */
+.feature-card.variant-success .feature-icon {
+  background-color: var(--q-success);
+}
+
+.feature-card.variant-success::before {
+  background-color: var(--q-success);
+}
+
+.feature-card.variant-danger .feature-icon {
+  background-color: var(--q-danger);
+}
+
+.feature-card.variant-danger::before {
+  background-color: var(--q-danger);
+}
+
+/* TODO: Add more variants when I get time */

@@ -2367,17 +2367,7 @@ Some placeholder content for the collapse component.
                     </div>
                 </div>
             </div>
-<<<<<<< HEAD
 
-            <div class="footer-bottom">
-                <p class="mb-0">&copy; 2023 QuantumCSS. All rights reserved.</p>
-                <div class="footer-bottom-links">
-                    <a href="#">Privacy Policy</a>
-                    <a href="#">Terms of Service</a>
-                    <a href="#">License</a>
-                    <a href="#">Sitemap</a>
-=======
-            
             <div class="footer-bottom border-t-thin mt-4 pt-3">
                 <div class="flex flex-wrap align-items-center justify-content-between">
                     <p class="mb-0">&copy; 2025 QuantumCSS. All rights reserved.</p>
@@ -2386,7 +2376,6 @@ Some placeholder content for the collapse component.
                         <a href="#" class="mr-2">Terms of Service</a>
                         <a href="#">License</a>
                     </div>
->>>>>>> 40dbfd42786f58abed74c2f03e234660db591c5d
                 </div>
             </div>
         </div>
@@ -2527,8 +2516,6 @@ Some placeholder content for the collapse component.
             sections.forEach(section => {
                 const sectionTop = section.offsetTop;
                 const sectionHeight = section.clientHeight;
-
-                // 200px offset for better UX
                 if (window.scrollY >= (sectionTop - 200)) {
                     current = section.getAttribute('id');
                 }
@@ -2542,7 +2529,8 @@ Some placeholder content for the collapse component.
             });
         });
 
-        // Smooth scrolling for all anchor links
+        // Handle smooth scrolling for anchor links
+        // Added this on Oct 15 after getting feedback about jarring page jumps
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 const targetId = this.getAttribute('href');
@@ -2551,19 +2539,27 @@ Some placeholder content for the collapse component.
                 const targetElement = document.querySelector(targetId);
                 if (targetElement) {
                     e.preventDefault();
+                    // The 80px offset accounts for the fixed header
                     window.scrollTo({
-                        top: targetElement.offsetTop - 80, // Offset for fixed header
+                        top: targetElement.offsetTop - 80, 
                         behavior: 'smooth'
                     });
                 }
             });
         });
 
-        // Touch-friendly interactions for mobile
+        // Detect touch devices and add a class for different hover states
+        // TODO: Test this on more devices - sometimes unreliable on older iPads
         if ('ontouchstart' in window) {
             document.body.classList.add('touch-device');
         }
+
+        // Initialize prism for syntax highlighting
+        if (typeof Prism !== 'undefined') {
+            Prism.highlightAll();
+        }
     </script>
+    <!-- Google Analytics will go here eventually -->
 </body>
 
 </html>

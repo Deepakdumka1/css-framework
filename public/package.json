@@ -5,8 +5,11 @@
   "main": "css/quantum.css",
   "style": "css/quantum.css",
   "scripts": {
-    "test": "echo \"No tests yet\" && exit 1",
-    "build": "echo \"No build process yet\" && exit 0"
+    "test": "echo \"I'll add tests someday :)\" && exit 1",
+    "build": "echo \"Using manual build process for now\" && exit 0",
+    "dev": "npx http-server -o -c-1",
+    "deploy": "cp -r ./css ./dist && cp -r ./js ./dist && echo 'Deployed to dist folder'",
+    "lint": "stylelint css/*.css"
   },
   "repository": {
     "type": "git",
@@ -18,12 +21,25 @@
     "responsive",
     "frontend",
     "lightweight",
-    "modern"
+    "modern",
+    "flexbox",
+    "grid"
   ],
-  "author": "Deepak Dumka",
+  "author": "Deepak Dumka <deepak.dumka1@gmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Deepakdumka1/css-framework/issues"
   },
-  "homepage": "https://github.com/Deepakdumka1/css-framework#readme"
+  "homepage": "https://github.com/Deepakdumka1/css-framework#readme",
+  "devDependencies": {
+    "autoprefixer": "^10.4.13",
+    "http-server": "^14.1.1", 
+    "stylelint": "^14.16.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not IE 11"
+  ],
+  "private": false
 }

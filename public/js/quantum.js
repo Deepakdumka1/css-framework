@@ -1,23 +1,28 @@
 /**
  * QuantumCSS Framework v1.0.0
- * JavaScript components for enhanced interactivity
+ * Started this in October 2022 and still improving!
+ * 
+ * TODO: 
+ * - Fix Safari flickering issue in dropdowns
+ * - Add toast notifications (maybe next month)
+ * - Refactor modal code - it's getting messy
  */
 
 (function() {
   'use strict';
   
-  // Create namespace
+  // Global namespace for all our components
   window.Quantum = {};
   
-  // Utility functions
+  // Utility functions I use everywhere
   const util = {
-    // Get closest matching ancestor (polyfill)
+    // Get parent element matching selector (for old browsers)
     closest: function(element, selector) {
       if (element.closest) {
         return element.closest(selector);
       }
       
-      // Polyfill if element.closest is not supported
+      // For IE - does anyone still use it? Keeping just in case
       let parent = element;
       while (parent) {
         if (parent.matches && parent.matches(selector)) {
@@ -28,24 +33,25 @@
       return null;
     },
     
-    // Trigger events
+    // Fire custom events
     triggerEvent: function(element, eventName) {
       let event;
       if (typeof window.CustomEvent === 'function') {
         event = new CustomEvent(eventName, { bubbles: true });
       } else {
+        // Old browser fallback
         event = document.createEvent('CustomEvent');
         event.initCustomEvent(eventName, true, false, {});
       }
       element.dispatchEvent(event);
     },
     
-    // Get all siblings
+    // Get all siblings - handy for nav items
     getSiblings: function(element) {
       return Array.from(element.parentNode.children).filter(child => child !== element);
     },
     
-    // Add or remove classes based on condition
+    // Add/remove class with condition - I use this ALL the time
     toggleClass: function(element, className, condition) {
       if (condition) {
         element.classList.add(className);
@@ -54,7 +60,8 @@
       }
     },
     
-    // Get scroll bar width
+    // Get scrollbar width - needed for modal compensation
+    // Found this trick on StackOverflow and modified it a bit
     getScrollbarWidth: function() {
       const outer = document.createElement('div');
       outer.style.visibility = 'hidden';
@@ -73,10 +80,11 @@
   
   /**
    * Alert Component
-   * Handles dismissible alerts
+   * Simple dismissible alerts
    */
   Quantum.Alert = {
     init: function() {
+      // Click handler for dismiss button
       document.addEventListener('click', function(event) {
         const dismissBtn = event.target.closest('[data-dismiss="alert"]');
         if (dismissBtn) {
@@ -88,12 +96,13 @@
       });
     },
     
+    // Animate and remove alert
     close: function(element) {
       util.triggerEvent(element, 'close.q.alert');
       
       element.classList.add('fade-out');
       
-      // Remove the alert after animation
+      // FIXME: sometimes there's a flash before removal on Firefox
       setTimeout(function() {
         element.remove();
         util.triggerEvent(element, 'closed.q.alert');
@@ -103,7 +112,7 @@
   
   /**
    * Tab Component
-   * Handles tab navigation
+   * Click handlers for tab navigation
    */
   Quantum.Tab = {
     init: function() {
@@ -151,7 +160,7 @@
   
   /**
    * Dropdown Component
-   * Handles dropdown menus
+   * Handles dropdown menus (still needs keyboard nav)
    */
   Quantum.Dropdown = {
     init: function() {
@@ -822,8 +831,144 @@
     }
   };
   
+  /**
+   * Typewriter Effect 
+   * 
+   * I built this for my personal site and thought others might like it
+   * It's not polished yet but it works for my needs
+   * 
+   * Usage:
+   * <div class="typewriter" data-text="First text,Second text,Third text" data-speed="70"></div>
+   */
+  Quantum.TypeWriter = {
+    // keep track of all instances
+    instances: [],
+    
+    init: function() {
+      // Find all typewriter elements
+      const elements = document.querySelectorAll('.typewriter');
+      
+      // Set up each instance
+      elements.forEach(element => {
+        // Get options
+        let textArray = element.dataset.text.split(',');
+        let speed = parseInt(element.dataset.speed) || 100; // default to 100ms
+        let loop = element.hasAttribute('data-loop'); // should it loop?
+        
+        // Create a placeholder for the text
+        let textSpan = document.createElement('span');
+        element.appendChild(textSpan);
+        
+        // Create cursor element
+        let cursor = document.createElement('span');
+        cursor.className = 'typewriter-cursor';
+        cursor.innerHTML = '|';
+        cursor.style.animation = 'cursor-blink 1s infinite';
+        element.appendChild(cursor);
+        
+        // Add some basic styling if not already styled
+        if (!element.style.position) 
+          element.style.position = 'relative';
+        
+        // Create the typewriter instance
+        let instance = {
+          element: element,
+          textSpan: textSpan,
+          textArray: textArray,
+          speed: speed,
+          loop: loop,
+          currentText: '',
+          currentIndex: 0,
+          isDeleting: false,
+          complete: false
+        };
+        
+        // Keep track of this instance
+        this.instances.push(instance);
+        
+        // Start typing for this instance
+        this.type(instance);
+      });
+      
+      // Add style for cursor if not present
+      if (!document.getElementById('typewriter-style')) {
+        const style = document.createElement('style');
+        style.id = 'typewriter-style';
+        style.innerHTML = `
+          @keyframes cursor-blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+          }
+          .typewriter-cursor {
+            font-weight: bold;
+            margin-left: 2px;
+          }
+        `;
+        document.head.appendChild(style);
+      }
+    },
+    
+    // The typing function
+    type: function(instance) {
+      // Current text being typed
+      let fullText = instance.textArray[instance.currentIndex];
+      let txt = instance.currentText;
+      
+      // Set typing speed - faster for deleting
+      let typeSpeed = instance.speed;
+      if(instance.isDeleting) {
+        typeSpeed = instance.speed / 2;
+      }
+      
+      // Check if done typing the full text
+      if(!instance.isDeleting && txt === fullText) {
+        // Pause at end of typing
+        typeSpeed = 1500;
+        // Set deleting flag
+        instance.isDeleting = true;
+      } else if(instance.isDeleting && txt === '') {
+        // Reset deleting flag
+        instance.isDeleting = false;
+        // Move to next text in array
+        instance.currentIndex++;
+        
+        // Check if we've reached the end of the array
+        if(instance.currentIndex === instance.textArray.length) {
+          if (instance.loop) {
+            instance.currentIndex = 0; // Reset to beginning
+          } else {
+            instance.complete = true;
+          }
+        }
+        
+        // Pause before typing next word
+        typeSpeed = 500;
+      }
+      
+      // Add or remove characters
+      if(!instance.complete) {
+        if(instance.isDeleting) {
+          // Remove character
+          instance.currentText = fullText.substring(0, txt.length - 1);
+        } else {
+          // Add character
+          instance.currentText = fullText.substring(0, txt.length + 1);
+        }
+        
+        // Update the element text
+        instance.textSpan.textContent = instance.currentText;
+        
+        // Schedule next update with dynamic speed
+        setTimeout(() => {
+          this.type(instance);
+        }, typeSpeed);
+      }
+    }
+  };
+  
   // Initialize all components
   document.addEventListener('DOMContentLoaded', function() {
+    // Core components
     Quantum.Alert.init();
     Quantum.Tab.init();
     Quantum.Dropdown.init();
@@ -834,8 +979,11 @@
     Quantum.ImageHandler.init();
     Quantum.DarkMode.init();
     
-    // Trigger fully loaded event
-    util.triggerEvent(document, 'quantum.loaded');
+    // My custom components
+    Quantum.TypeWriter.init();
+    
+    // Fire event when framework is ready
+    document.dispatchEvent(new Event('quantum.ready'));
   });
   
 })();
