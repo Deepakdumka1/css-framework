@@ -1,28 +1,28 @@
-/* QuantumCSS Framework v1.0.0
+/* BinaryCSS Framework v1.0.0
  * A groundbreaking CSS framework built from scratch
- * https://quantumcss.com
+ * https://binaryCSS.com
  */
 
 /* Import Variables (Must be first) */
-@import url("quantum-variables.css");
+@import url("binary-variables.css");
 
 /* Import Base Styles */
-@import url("quantum-base.css");
+@import url("binary-base.css");
 
 /* Import Grid System */
-@import url("quantum-grid.css");
+@import url("binary-grid.css");
 
 /* Import Utility Classes */
-@import url("quantum-utilities.css");
+@import url("binary-utilities.css");
 
 /* Import Components */
-@import url("quantum-components.css");
+@import url("binary-components.css");
 
 /* Import Advanced Components */
-@import url("quantum-advanced-components.css");
+@import url("binary-advanced-components.css");
 
 /* Import JavaScript Components */
-@import url("quantum-js-components.css");
+@import url("binary-js-components.css");
 
 /* Print Styles */
 @media print {
