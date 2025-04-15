@@ -108,12 +108,12 @@ Here's how a simple BinaryCSS page looks:
 ## Documentation
 
 The docs are a work in progress (aren't they always?), but you can find what we have so far here:
-[documentation](https://Deepakdumka1.github.io/css-framework/docs/)
+[documentation](https://deepak-css-framework.vercel.app/)
 
-- [Grid System](https://Deepakdumka1.github.io/css-framework/docs/#grid-system) - my favorite part!
-- [Typography](https://Deepakdumka1.github.io/css-framework/docs/#typography)
-- [Components](https://Deepakdumka1.github.io/css-framework/docs/#components)
-- [Utilities](https://Deepakdumka1.github.io/css-framework/docs/#utilities)
+- [Grid System](https://deepak-css-framework.vercel.app/#grid-system) - my favorite part!
+- [Typography](https://deepak-css-framework.vercel.app/#typography)
+- [Components](https://deepak-css-framework.vercel.app/#components)
+- [Utilities](https://deepak-css-framework.vercel.app/#utilities)
 
 ## Components
 
