@@ -1,14 +1,14 @@
-# QuantumCSS
+# BinaryCSS
 
 A lightweight, modern CSS framework I built for my own projects that's now ready to share with the world. Responsive, clean, and no unnecessary bloat.
 
-![QuantumCSS Logo](docs/img/quantum-logo.png)
+![BinaryCSS Logo](docs/img/binary-logo.png)
 
-## The Story Behind QuantumCSS
+## The Story Behind BinaryCSS
 
 I got tired of using bloated CSS frameworks that took forever to load and came with a ton of stuff I never used. After complaining about this on Twitter for the 100th time, I finally decided to build my own framework during a two-week vacation. What started as a personal project has evolved into something I'm pretty proud of.
 
-QuantumCSS focuses on what actually matters: performance, simplicity, and developer experience. I've been using it for my client projects for the past 8 months and it's been a huge time-saver.
+BinaryCSS focuses on what actually matters: performance, simplicity, and developer experience. I've been using it for my client projects for the past 8 months and it's been a huge time-saver.
 
 ## Features
 
@@ -23,7 +23,7 @@ QuantumCSS focuses on what actually matters: performance, simplicity, and develo
 
 ## Installation
 
-Getting QuantumCSS into your project is super easy:
+Getting BinaryCSS into your project is super easy:
 
 ### Option a) Just Download It
 
@@ -31,7 +31,7 @@ Getting QuantumCSS into your project is super easy:
 
 ```html
 <!-- CSS -->
-<link rel="stylesheet" href="path/to/quantum.css">
+<link rel="stylesheet" href="path/to/binary.css">
 
 <!-- JS (only if you need the interactive components) -->
 <script src="path/to/quantum.js"></script>
@@ -40,21 +40,21 @@ Getting QuantumCSS into your project is super easy:
 ### Option b) NPM (my preferred way)
 
 ```bash
-npm install @deepakdumka/quantumcss --save
+npm install @deepakdumka/BinaryCSS --save
 ```
 
 Then import it:
 
 ```javascript
 // Get everything
-import '@deepakdumka/quantumcss/css/quantum.css';
+import '@deepakdumka/BinaryCSS/css/binary.css';
 
 // JS components if you need them
-import '@deepakdumka/quantumcss/js/quantum.js';
+import '@deepakdumka/BinaryCSS/js/binary.js';
 
 // Or cherry-pick just what you need
-import '@deepakdumka/quantumcss/css/quantum-base.css';
-import '@deepakdumka/quantumcss/css/quantum-grid.css';
+import '@deepakdumka/BinaryCSS/css/binary-base.css';
+import '@deepakdumka/BinaryCSS/css/binary-grid.css';
 // etc...
 ```
 
@@ -64,7 +64,7 @@ I'm still setting up a proper CDN. For now, just use one of the options above. W
 
 ## Quick Example
 
-Here's how a simple QuantumCSS page looks:
+Here's how a simple BinaryCSS page looks:
 
 ```html
 <!DOCTYPE html>
@@ -72,8 +72,8 @@ Here's how a simple QuantumCSS page looks:
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My QuantumCSS Project</title>
-  <link rel="stylesheet" href="path/to/quantum.css">
+  <title>My BinaryCSS Project</title>
+  <link rel="stylesheet" href="path/to/binary.css">
 </head>
 <body>
   <div class="container">
@@ -82,7 +82,7 @@ Here's how a simple QuantumCSS page looks:
         <div class="card">
           <div class="card-body">
             <h3 class="card-title">Getting Started</h3>
-            <p>This is a simple card built with QuantumCSS.</p>
+            <p>This is a simple card built with BinaryCSS.</p>
             <button class="btn btn-primary">Learn More</button>
           </div>
         </div>

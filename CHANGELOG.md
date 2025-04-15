@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to the QuantumCSS framework will be documented in this file.
+All notable changes to the BinaryCSS framework will be documented in this file.
 
 ## [0.1.1] - 2023-05-15
 
