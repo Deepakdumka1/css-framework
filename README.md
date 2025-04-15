@@ -2,7 +2,7 @@
 
 A lightweight, modern CSS framework I built for my own projects that's now ready to share with the world. Responsive, clean, and no unnecessary bloat.
 
-![BinaryCSS Logo](docs/img/binary-logo.png)
+![BinaryCSS Logo](public/img/binary-logo-color.svg)
 
 ## The Story Behind BinaryCSS
 

@@ -4,7 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BinaryCSS - Modern, Lightweight CSS Framework</title>
+    <title>⟨⧸⟩ BinaryCSS - Modern, Lightweight CSS Framework</title>
+    <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="img/binary-logo-small.svg" type="image/svg+xml" sizes="any">
+    <link rel="shortcut icon" href="img/favicon.ico">
+    <!-- Apple Touch Icon for iOS devices -->
+    <link rel="apple-touch-icon" href="img/binary-logo-small.svg">
+    <!-- Windows Tiles -->
+    <meta name="msapplication-TileColor" content="#4361EE">
+    <meta name="msapplication-TileImage" content="img/binary-logo-small.svg">
     <link rel="stylesheet" href="css/binary.css">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
@@ -48,6 +56,23 @@
             --q-bg: #121212;
             --q-border: #2d2d2d;
             background-color: #121212;
+        }
+
+        /* Logo styles */
+        .navbar-brand img {
+            transition: filter 0.3s ease;
+        }
+
+        body.dark-mode .navbar-brand img {
+            filter: brightness(1.2);
+        }
+
+        .hero-content img {
+            transition: transform 0.3s ease, filter 0.3s ease;
+        }
+
+        .hero-content img:hover {
+            transform: scale(1.05);
         }
 
         img {
@@ -1276,6 +1301,7 @@
         <div class="container">
             <!-- Brand/Logo -->
             <div class="navbar-brand">
+                <img src="img/binary-logo-small.svg" alt="BinaryCSS Logo" width="40" height="40" style="margin-right: 10px;">
                 <h1><a href="index.html">Binary<span>CSS</span></a></h1>
             </div>
 
@@ -1335,6 +1361,7 @@
     <section class="docs-hero py-4">
         <div class="container">
             <div class="hero-content text-center">
+                <img src="img/binary-logo-color.svg" alt="BinaryCSS Logo" width="50" height="50" style="margin-bottom: 20px;">
                 <h1 class="main-heading fw-extra-thick">BinaryCSS Documentation</h1>
                 <p class="big-font mt-2">Learn how to use our lightweight, modern CSS framework to build beautiful
                     websites</p>
