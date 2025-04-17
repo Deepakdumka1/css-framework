@@ -1478,6 +1478,96 @@
           }
         }
       }
+      /* Container styling */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Margin utility class */
+.my-10 {
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
+/* Navbar styling */
+.navbar-comp {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: #0f172a;
+    color: #fdfdfd;
+}
+
+/* Logo styling */
+.logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+/* Navigation links container */
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+/* Individual navigation links */
+.nav-links a {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  padding: 0.5rem 0;
+  position: relative;
+}
+
+.nav-links a:hover {
+  color: #0066cc;
+}
+
+/* Underline effect on hover */
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #0066cc;
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  
+  .nav-links {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}
+
+/* Mobile nav styles */
+@media (max-width: 480px) {
+  .nav-links {
+    gap: 1rem;
+  }
+}
+
         /* Utility classes */
         .text-center {
             text-align: center;
@@ -3041,7 +3131,6 @@
                                 </li>
                                 <li class="sidebar-item"><a href="#responsive" class="sidebar-link">Responsive
                                         Design</a></li>
-                                <li class="sidebar-item"><a href="#containers" class="sidebar-link">Containers</a></li>
                             </ul>
                         </div>
 
@@ -3235,25 +3324,6 @@
                         <h3 id="grid-system" class="small-heading fw-thick mt-4 mb-2">Grid System</h3>
                         <p>BinaryCSS includes a responsive 12-column grid system that helps you create flexible layouts
                             for any screen size.</p>
-
-                        <h4 class="fw-thick mt-3 mb-2">Basic Grid Structure</h4>
-                        <p>The grid system uses a series of containers, rows, and columns to layout and align content:
-                        </p>
-
-                        <div class="code-block mt-3">
-                            <div
-                                class="code-header flex align-items-center justify-content-between border-b-thin py-1 px-2">
-                                <span class="code-label">HTML</span>
-                                <button class="copy-btn tiny-font border-thin">Copy</button>
-                            </div>
-                            <pre class="m-0"><code class="language-html">&lt;div class="container"&gt;
-&lt;div class="row"&gt;
-&lt;div class="col-md-6"&gt;Content&lt;/div&gt;
-&lt;div class="col-md-6"&gt;Content&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;</code></pre>
-                        </div>
-
                         <div class="grid-example mt-3">
                             <div class="row grid-demo">
                                 <div class="col-md-6 grid-demo-col">
@@ -3292,6 +3362,46 @@
                             </div>
                         </div>
 
+                        
+
+                        <!-- Grid System Examples from demo.html -->
+                        <h4 class="fw-thick mt-4 mb-2">Advanced Grid Examples</h4>
+                        <div class="container my-4">
+                            <!-- Basic 3-column layout -->
+                            <div class="row" style="margin-bottom: 1rem">
+                                <div class="col-4 bg-gray p-4 text-center text-white">.col-4</div>
+                                <div class="col-4 bg-red p-4 text-center text-white">.col-4</div>
+                                <div class="col-4 bg-green p-4 text-center text-white">.col-4</div>
+                            </div>
+
+                            <!-- Responsive grid -->
+                            <div class="row" style="margin-bottom: 1rem">
+                                <div class="col-12 col-md-6 p-4 text-center" style="background: #fde68a">
+                                    .col-12 .col-md-6
+                                </div>
+                                <div class="col-12 col-md-6 p-4 text-center" style="background: #fcd34d">
+                                    .col-12 .col-md-6
+                                </div>
+                            </div>
+
+                            <!-- Auto column -->
+                            <div class="row" style="margin-bottom: 1rem">
+                                <div class="col-auto" style="background: #a5b4fc; padding: 1rem; text-align: center">
+                                    .col-auto
+                                </div>
+                                <div class="col" style="background: #818cf8; padding: 1rem; text-align: center">
+                                    .col
+                                </div>
+                            </div>
+
+                            <!-- Offset example -->
+                            <div class="row">
+                                <div class="col-6 offset-3"
+                                    style="background: #fca5a5; padding: 1rem; text-align: center">
+                                    .col-6 .offset-3
+                                </div>
+                            </div>
+                        </div>
                         <h4 class="fw-thick mt-4 mb-2">Responsive Breakpoints</h4>
                         <p>The grid system includes six tiers of predefined classes for building responsive layouts:</p>
 
@@ -3338,44 +3448,18 @@
                                 </tbody>
                             </table>
                         </div>
-
-                        <!-- Grid System Examples from demo.html -->
-                        <h4 class="fw-thick mt-4 mb-2">Advanced Grid Examples</h4>
-                        <div class="container my-4">
-                            <!-- Basic 3-column layout -->
-                            <div class="row" style="margin-bottom: 1rem">
-                                <div class="col-4 bg-gray p-4 text-center text-white">.col-4</div>
-                                <div class="col-4 bg-red p-4 text-center text-white">.col-4</div>
-                                <div class="col-4 bg-green p-4 text-center text-white">.col-4</div>
+                        <div class="code-block mt-3">
+                            <div
+                                class="code-header flex align-items-center justify-content-between border-b-thin py-1 px-2">
+                                <span class="code-label">HTML</span>
+                                <button class="copy-btn tiny-font border-thin">Copy</button>
                             </div>
-
-                            <!-- Responsive grid -->
-                            <div class="row" style="margin-bottom: 1rem">
-                                <div class="col-12 col-md-6 p-4 text-center" style="background: #fde68a">
-                                    .col-12 .col-md-6
-                                </div>
-                                <div class="col-12 col-md-6 p-4 text-center" style="background: #fcd34d">
-                                    .col-12 .col-md-6
-                                </div>
-                            </div>
-
-                            <!-- Auto column -->
-                            <div class="row" style="margin-bottom: 1rem">
-                                <div class="col-auto" style="background: #a5b4fc; padding: 1rem; text-align: center">
-                                    .col-auto
-                                </div>
-                                <div class="col" style="background: #818cf8; padding: 1rem; text-align: center">
-                                    .col
-                                </div>
-                            </div>
-
-                            <!-- Offset example -->
-                            <div class="row">
-                                <div class="col-6 offset-3"
-                                    style="background: #fca5a5; padding: 1rem; text-align: center">
-                                    .col-6 .offset-3
-                                </div>
-                            </div>
+                            <pre class="m-0"><code class="language-html">&lt;div class="container"&gt;
+&lt;div class="row"&gt;
+&lt;div class="col-md-6"&gt;Content&lt;/div&gt;
+&lt;div class="col-md-6"&gt;Content&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</code></pre>
                         </div>
                     </section>
 
@@ -3505,6 +3589,15 @@
                               <div class="demo h-min">.h-min</div>
                               <div class="demo h-max">.h-max</div>
                             </div>
+                            <h3 class="small-heading fw-thick mt-4 mb-2">Arbitrary Height and Width</h3>
+                        <p>Define custom dimensions for your elements:</p>
+
+                        <div class="height-demo-area container mt-3 ">
+                            <div class="box w-[10rem] h-[11rem] p-4">w-[10rem] h-[10rem]</div>
+                            <div class="box h-[15rem] w-[15rem] p-4">h-[15rem] w-[15rem]</div>
+                            <div class="box h-[20rem] w-[20rem] p-4">h-[20rem] w-[20rem]</div>
+                            <div class="box h-[25vh] w-[200px] p-4">h-[25vh] w-[200px]</div>
+                        </div>
                           </section>
 
                           <section class="container my-10">
@@ -3803,7 +3896,7 @@
 
 
                         <!-- Color buttons from demo.html -->
-                        <div class="demo-section container mt-4">
+                        <div class="demo-section container mt-4" id="buttons">
                             <h4 class="fw-thick mb-2">Color Buttons</h4>
                             <div class="button-group">
                                 <button class="btn btn-black text-2xl">black</button>
@@ -3865,7 +3958,17 @@
 &lt;i class="fas fa-download mr-1"&gt;&lt;/i&gt; Download
 &lt;/button&gt;</code></pre>
                         </div>
-
+                        <section class="container my-10" id="navs">
+                            <header class="navbar-comp">
+                              <div class="logo">MySite</div>
+                              <nav class="nav-links">
+                                <a href="#">Home</a>
+                                <a href="#">About</a>
+                                <a href="#">Services</a>
+                                <a href="#">Contact</a>
+                              </nav>
+                            </header>
+                          </section>
                         <h3 id="cards" class="small-heading fw-thick mt-6 mb-2">Cards</h3>
                         <p>Cards are flexible content containers with multiple variants:</p>
 
@@ -4091,7 +4194,7 @@ This is an info alert—check it out!
 &lt;/div&gt;</code></pre>
                         </div>
 
-                        <h3 id="forms" class="small-heading fw-thick mt-6 mb-4">Forms</h3>
+                        <h3 id="forms" class="small-heading fw-thick mt-6 mb-4 text-4xl">Forms</h3>
                         <p>Style form controls and components with BinaryCSS:</p>
 
                         <!-- Contact form from demo.html -->
@@ -4099,19 +4202,19 @@ This is an info alert—check it out!
                             <h4 class="fw-thick mb-2">Contact Form Example</h4>
                             <form>
                                 <div class="form-group">
-                                    <label for="name">Name</label>
-                                    <input id="name" type="text" placeholder="Your name" class="form-control">
+                                    <label for="name" class="text-3xl">Name</label>
+                                    <input id="name " type="text" placeholder="Your name" class="form-control" style="font-size: 1.5rem;">
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group text-3xl">
                                     <label for="email">Email</label>
-                                    <input id="email" type="email" placeholder="you@example.com" class="form-control">
+                                    <input id="email" type="email" placeholder="you@example.com" class="form-control" style="font-size: 1.5rem;">
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group text-3xl">
                                     <label for="message">Message</label>
                                     <textarea id="message" rows="4" placeholder="Your message"
-                                        class="form-control"></textarea>
+                                        class="form-control" style="font-size: 1.5rem;"></textarea>
                                 </div>
-                                <button class="btn btn-primary text-2xl">Send</button>
+                                <button class="btn btn-primary text-3xl">Send</button>
                             </form>
                         </div>
 
@@ -4500,20 +4603,6 @@ Some placeholder content for the collapse component.
 
                     <!-- Arbitrary Values Section -->
                     <section id="arbitrary-values" class="docs-section mb-5">
-                        <div class="section-header mb-3 mt-6">
-                            <h2 class="medium-heading fw-thick">Arbitrary Values</h2>
-                            <div class="section-divider"></div>
-                        </div>
-                        <h3 class="small-heading fw-thick mt-4 mb-2">Arbitrary Height and Width</h3>
-                        <p>Define custom dimensions for your elements:</p>
-
-                        <div class="height-demo-area container mt-3 ">
-                            <div class="box w-[10rem] h-[11rem] p-4">w-[10rem] h-[10rem]</div>
-                            <div class="box h-[15rem] w-[15rem] p-4">h-[15rem] w-[15rem]</div>
-                            <div class="box h-[20rem] w-[20rem] p-4">h-[20rem] w-[20rem]</div>
-                            <div class="box h-[25vh] w-[200px] p-4">h-[25vh] w-[200px]</div>
-                        </div>
-
                         <h3 class="small-heading fw-thick mt-6 mb-2">Arbitrary Font Size and Color</h3>
                         <p>Apply custom typography styles:</p>
 
